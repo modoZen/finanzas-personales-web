@@ -36,19 +36,19 @@ Verificado con Prettier 3.9.10 y Node 24.22.1: un `prettier.config.ts` con `impo
 Con `proseWrap: 'always'` Prettier reescribiría los `.md` de OpenSpec, que genera y mantiene el CLI, y los comandos y skills que `openspec init` generó en `.claude/`. Solo se formatean archivos del proyecto. También se ignoran `dist`, `coverage`, `node_modules` y `package-lock.json`.
 
 **4. Vitest configurado en `vitest.config.ts` separado.**
-Cuando existen `vitest.config.ts` y `vite.config.ts`, Vitest usa el primero e ignora el segundo, así que `vitest.config.ts` importa la config de Vite y la combina con `mergeConfig(viteConfig, defineConfig({ test: { ... } }))` para reutilizar el plugin de React y la resolución. Entorno `jsdom`, `globals: false` (imports explícitos) y un `setupFiles` con `@testing-library/jest-dom/vitest`. Los tests viven junto al código (`*.test.ts(x)`). El archivo se añade a `include` de `tsconfig.node.json`.
+Cuando existen `vitest.config.ts` y `vite.config.ts`, Vitest usa el primero e ignora el segundo, así que `vitest.config.ts` importa la config de Vite y la combina con `mergeConfig(viteConfig, defineConfig({ test: { ... } }))` para reutilizar el plugin de React y la resolución. Entorno `jsdom`, `globals: false` (imports explícitos) y un `setupFiles` con `@testing-library/jest-dom/vitest`. Como con `globals: false` Testing Library no limpia el DOM entre tests por sí sola, el setup registra `afterEach(cleanup)` de forma explícita. Los tests viven junto al código (`*.test.ts(x)`). El archivo se añade a `include` de `tsconfig.node.json`.
 Esto mantiene `vite.config.ts` con solo la configuración de producción, sin la clave `test` ni coverage.
 *Alternativa:* clave `test` dentro de `vite.config.ts`. Descartada: mezcla configuración de test con la de producción; su única ventaja es un archivo menos.
 
 **5. Cobertura con `@vitest/coverage-v8` y umbral del 80 %.**
-Umbral del 80 % en `statements`, `branches`, `functions` y `lines`. Si no se alcanza, Vitest termina con código distinto de 0 y el hook rechaza el commit. Reportes `text` y `html`, carpeta `coverage/` ignorada en git y Prettier.
+Umbral del 80 % en `statements`, `branches`, `functions` y `lines`. Si no se alcanza, Vitest termina con código distinto de 0 y el hook rechaza el commit. Reportes `text` y `html`, carpeta `coverage/` ignorada en git, Prettier y ESLint (los `.js` que genera el reporte HTML producen warnings `Unused eslint-disable directive` si ESLint los revisa).
 Para que el umbral sea significativo se define qué se mide: `include: ['src/**/*.{ts,tsx}']` y `exclude` de `src/main.tsx` (solo monta la app en el DOM, sin lógica), los archivos de test, `src/test/**` y los `.d.ts`.
 El `App` actual es el contador del template: para cubrir su única función propia (el `onClick`) hacen falta un test de renderizado y otro de interacción. Esos tests se reescriben cuando `App` se reemplace.
 La versión de `@vitest/coverage-v8` debe coincidir con la de `vitest`.
 *Alternativa:* cobertura solo informativa, sin umbral. Descartada: se decidió exigir el 80 % desde el inicio porque la app es simple y cubrirla es viable.
 
-**6. Tipos de test en `tsconfig.app.json`.**
-Con `globals: false` solo hace falta que el setup importe `@testing-library/jest-dom/vitest`. Así `tsc -b` (parte del build) verifica también los tests.
+**6. Tipos de test sin cambios en `tsconfig.app.json`.**
+Con `globals: false` solo hace falta que el setup importe `@testing-library/jest-dom/vitest`. Como `src/test/setup.ts` está dentro de `src`, `tsc -b` (parte del build) ya conoce los tipos de los matchers y verifica también los tests. Verificado con un test temporal que usa `toBeInTheDocument`: compila sin modificar `tsconfig.app.json`.
 
 **7. Husky 9 + lint-staged; un único hook `pre-commit`.**
 `.husky/pre-commit` ejecuta en orden, y aborta en el primer fallo:
@@ -119,3 +119,12 @@ Versiones instaladas: `eslint` 10.13.0, `typescript-eslint` 8.72.1 y `eslint-plu
 | `camelcase` | `['error', { ignoreDestructuring: true, properties: 'never' }]` |
 | `no-underscore-dangle` | `['error', { allowAfterThis: true }]` |
 | `no-nested-ternary` | `'error'` |
+
+### Vitest y Testing Library
+
+- Versiones estables: `vitest` y `@vitest/coverage-v8` 5.0.5 (deben coincidir), `jsdom` 30.1.3, `@testing-library/react` 16.3.3, `@testing-library/jest-dom` 7.0.1, `@testing-library/user-event` 14.6.8 y `@testing-library/dom` 10.4.2.
+- Compatibilidad: Vitest 5 admite Vite `^6.4 || ^7 || ^8` y Node `^22.12 || ^24`; `jsdom` 30 pide Node `^24.15` (el proyecto usa 24.22.1); `@testing-library/react` admite React 18 y 19.
+- `@testing-library/dom` (`^10`) es peer obligatorio de `@testing-library/react` y `@testing-library/jest-dom`, así que se instala de forma explícita (no figuraba en la lista original).
+- Instalación: `npm install -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom @testing-library/user-event`.
+- Si existen `vitest.config.*` y `vite.config.*`, el primero tiene prioridad y el segundo se ignora. La documentación muestra `mergeConfig(viteConfig, defineConfig({ test: { ... } }))` con imports desde `vitest/config`.
+- Cobertura: por defecto solo se reportan los archivos que los tests importan; para incluir el resto se configura `coverage.include` (por ejemplo `['src/**/*.{ts,tsx}']`). `thresholds` acepta `statements`, `branches`, `functions` y `lines` (un número positivo es el porcentaje mínimo). Los reporters por defecto son `text`, `html`, `clover` y `json`, y el directorio es `./coverage`. La documentación no indica el código de salida cuando no se alcanza el umbral; se comprobó en la tarea 3.9: Vitest imprime `ERROR: Coverage for lines (50%) does not meet global threshold (80%)` (uno por indicador) y termina con código 1.

@@ -18,15 +18,15 @@
 
 ## 3. Vitest y cobertura
 
-- [ ] 3.1 Consultar la documentación oficial de Vitest, `@vitest/coverage-v8` y Testing Library (compatibilidad con Vite 8, TS 6 y React 19) y registrar versiones y pasos en "Compatibilidad verificada" de `design.md`; verificar que la sección lista versiones y comando de instalación
-- [ ] 3.2 Instalar `vitest`, `@vitest/coverage-v8` (misma versión que `vitest`), `jsdom`, `@testing-library/react`, `@testing-library/jest-dom` y `@testing-library/user-event` como devDependencies y verificar que `npm ls` no reporta conflictos de peers
-- [ ] 3.3 Crear `vitest.config.ts` que combine la config de Vite con `mergeConfig` y defina `test` (entorno `jsdom`, `setupFiles`) y `coverage` (proveedor v8, reportes `text` y `html`, `thresholds` del 80 % en statements, branches, functions y lines, `include` de `src/**/*.{ts,tsx}` y `exclude` de `src/main.tsx`, tests, `src/test/**` y `.d.ts`), añadirlo a `include` de `tsconfig.node.json` y crear `src/test/setup.ts` que importe `@testing-library/jest-dom/vitest`; verificar que `npx vitest run` arranca sin errores de configuración, que `npx tsc -b` compila y que `vite.config.ts` quedó sin cambios
-- [ ] 3.4 Añadir los tipos de test a `tsconfig.app.json` y verificar que `npx tsc -b` compila sin errores
-- [ ] 3.5 Añadir scripts `test`, `test:watch` y `test:coverage` a `package.json`
-- [ ] 3.6 Añadir `coverage` a `.gitignore` (ya está en `.prettierignore`) y verificar que `git status` no muestra la carpeta tras generar un reporte
-- [ ] 3.7 Escribir dos tests para `App`: uno de renderizado y otro que hace clic en el botón con `user-event` y comprueba que el contador sube; verificar que `npm test` pasa con 2 tests en verde y que `npm run test:coverage` imprime la tabla con al menos 80 % en los cuatro indicadores y genera `coverage/`
-- [ ] 3.8 Verificar que un test roto hace fallar `npm test` con código distinto de 0 (prueba temporal, sin commitearla)
-- [ ] 3.9 Verificar que bajar la cobertura por debajo del umbral (por ejemplo, añadir temporalmente una función sin test en `src/`) hace fallar `npm run test:coverage` con código distinto de 0 (prueba temporal, sin commitearla)
+- [x] 3.1 Consultar la documentación oficial de Vitest, `@vitest/coverage-v8` y Testing Library (compatibilidad con Vite 8, TS 6 y React 19) y registrar versiones y pasos en "Compatibilidad verificada" de `design.md`; verificar que la sección lista versiones y comando de instalación
+- [x] 3.2 Instalar `vitest`, `@vitest/coverage-v8` (misma versión que `vitest`), `jsdom`, `@testing-library/react`, `@testing-library/dom` (peer obligatorio), `@testing-library/jest-dom` y `@testing-library/user-event` como devDependencies y verificar que `npm ls` no reporta conflictos de peers
+- [x] 3.3 Crear `vitest.config.ts` que combine la config de Vite con `mergeConfig` y defina `test` (entorno `jsdom`, `setupFiles`) y `coverage` (proveedor v8, reportes `text` y `html`, `thresholds` del 80 % en statements, branches, functions y lines, `include` de `src/**/*.{ts,tsx}` y `exclude` de `src/main.tsx`, tests, `src/test/**` y `.d.ts`), añadirlo a `include` de `tsconfig.node.json` y crear `src/test/setup.ts` que importe `@testing-library/jest-dom/vitest`; verificar que `npx vitest run` arranca sin errores de configuración, que `npx tsc -b` compila y que `vite.config.ts` quedó sin cambios
+- [x] 3.4 Verificar que los tipos de `jest-dom` y `user-event` compilan en un test con `npx tsc -b`; el import del setup basta, así que `tsconfig.app.json` no se modifica
+- [x] 3.5 Añadir scripts `test`, `test:watch` y `test:coverage` a `package.json`
+- [x] 3.6 Añadir `coverage` a `.gitignore` y a `globalIgnores` de `eslint.config.js` (ya está en `.prettierignore`) y verificar que `git status` no muestra la carpeta y que `npm run lint` no da warnings tras generar un reporte
+- [x] 3.7 Escribir dos tests para `App`: uno de renderizado y otro que hace clic en el botón con `user-event` y comprueba que el contador sube; verificar que `npm test` pasa con 2 tests en verde y que `npm run test:coverage` imprime la tabla con al menos 80 % en los cuatro indicadores y genera `coverage/`
+- [x] 3.8 Verificar que un test roto hace fallar `npm test` con código distinto de 0 (prueba temporal, sin commitearla)
+- [x] 3.9 Verificar que bajar la cobertura por debajo del umbral (por ejemplo, añadir temporalmente una función sin test en `src/`) hace fallar `npm run test:coverage` con código distinto de 0 (prueba temporal, sin commitearla)
 
 ## 4. Husky y lint-staged
 
