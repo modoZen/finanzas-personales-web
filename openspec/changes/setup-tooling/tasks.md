@@ -30,12 +30,12 @@
 
 ## 4. Husky y lint-staged
 
-- [ ] 4.1 Consultar la documentación oficial de Husky 9 y lint-staged (versiones, formato de config, script `prepare`) y registrar versiones y pasos en "Compatibilidad verificada" de `design.md`; verificar que la sección lista versiones y pasos
-- [ ] 4.2 Instalar `husky` y `lint-staged` como devDependencies y añadir `"prepare": "husky"` a `package.json`; verificar que `npm install` crea la carpeta `.husky/_`
-- [ ] 4.3 Configurar `lint-staged` en `package.json`: `*.{ts,tsx}` → `eslint --fix`, `prettier --write`; `*.{json,css,html,md}` → `prettier --write`; verificar que un archivo de `openspec/` en staging no es modificado
-- [ ] 4.4 Crear `.husky/pre-commit` con `npx lint-staged`, `npm run build` y `npm run test:coverage` en ese orden, y verificar que un commit con un archivo mal formateado queda formateado y que uno con error de lint es rechazado
-- [ ] 4.5 Verificar que el hook bloquea el commit cuando el build falla (error de tipos temporal) cuando un test falla (test roto temporal) y cuando la cobertura queda bajo el umbral (función sin test temporal), y que las tres pruebas se revierten sin commitearse
-- [ ] 4.6 Documentar en `README.md` los scripts, el hook y cómo se instala, y verificar que los comandos documentados funcionan tal como están escritos
+- [x] 4.1 Consultar la documentación oficial de Husky 9 y lint-staged (versiones, formato de config, script `prepare`) y registrar versiones y pasos en "Compatibilidad verificada" de `design.md`; verificar que la sección lista versiones y pasos
+- [x] 4.2 Instalar `husky` y `lint-staged` como devDependencies y añadir `"prepare": "husky"` a `package.json`; verificar que `npm install` crea la carpeta `.husky/_`
+- [x] 4.3 Configurar `lint-staged` en `lint-staged.config.ts` (tipado con `Configuration` y añadido a `include` de `tsconfig.node.json`): `*.{ts,tsx}` → `eslint --fix`, `prettier --write`; `*.{json,css,html,md}` → `prettier --write`; verificar que un archivo de `openspec/` en staging no es modificado
+- [x] 4.4 Crear `.husky/pre-commit` con `npx lint-staged`, `npm run build` y `npm run test:coverage` en ese orden, y verificar que un commit con un archivo mal formateado queda formateado y que uno con error de lint es rechazado
+- [x] 4.5 Verificar que el hook bloquea el commit cuando el build falla (error de tipos temporal) cuando un test falla (test roto temporal) y cuando la cobertura queda bajo el umbral (función sin test temporal), y que las tres pruebas se revierten sin commitearse
+- [x] 4.6 Documentar en `README.md` los scripts, el hook y cómo se instala, y verificar que los comandos documentados funcionan tal como están escritos
 
 ## 5. Integración
 

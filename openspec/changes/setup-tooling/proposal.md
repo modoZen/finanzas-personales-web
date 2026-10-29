@@ -25,6 +25,6 @@ El proyecto parte del template de Vite sin formateo automático, sin tests y sin
 ## Impact
 
 - **Dependencias (dev)**: `prettier`, `vitest`, `@vitest/coverage-v8`, `jsdom`, `@testing-library/react`, `@testing-library/dom`, `@testing-library/jest-dom`, `@testing-library/user-event`, `husky`, `lint-staged`.
-- **Archivos nuevos**: `prettier.config.ts`, `.prettierignore`, `vitest.config.ts`, `.husky/pre-commit`, configuración de lint-staged, setup de Vitest y un test de humo.
-- **Archivos modificados**: `package.json` (scripts y `lint-staged`), `eslint.config.js` (reglas de convenciones), `src/App.tsx` (ajustes por las reglas nuevas), `tsconfig.node.json` (incluir `prettier.config.ts` y `vitest.config.ts`), `.gitignore` (`coverage`), `README.md`. `vite.config.ts` no se modifica.
+- **Archivos nuevos**: `prettier.config.ts`, `.prettierignore`, `vitest.config.ts`, `.husky/pre-commit`, `lint-staged.config.ts`, setup de Vitest y un test de humo.
+- **Archivos modificados**: `package.json` (scripts), `eslint.config.js` (reglas de convenciones), `src/App.tsx` (ajustes por las reglas nuevas), `tsconfig.node.json` (incluir `prettier.config.ts`, `vitest.config.ts` y `lint-staged.config.ts`), `.gitignore` (`coverage`), `README.md`. `vite.config.ts` no se modifica.
 - **Flujo de trabajo**: cada commit ejecuta lint, build y tests con cobertura; un commit con errores de lint, de tipos, de build o con tests rotos será rechazado.

@@ -52,7 +52,7 @@ Con `globals: false` solo hace falta que el setup importe `@testing-library/jest
 
 **7. Husky 9 + lint-staged; un único hook `pre-commit`.**
 `.husky/pre-commit` ejecuta en orden, y aborta en el primer fallo:
-1. `npx lint-staged`: sobre `*.{ts,tsx}` corre `eslint --fix` y `prettier --write`; sobre `*.{json,css,html,md}` solo `prettier --write`.
+1. `npx lint-staged` (config en `lint-staged.config.ts`): sobre `*.{ts,tsx}` corre `eslint --fix` y `prettier --write`; sobre `*.{json,css,html,md}` solo `prettier --write`.
 2. `npm run build`: `tsc -b && vite build`, que ya cubre la verificación de tipos.
 3. `npm run test:coverage`.
 Build y tests operan sobre el proyecto completo, por eso van como comandos del hook y no dentro de lint-staged (que trabaja por archivo). No hay `pre-push`, ni script `typecheck`, ni `vitest related`: el build y la suite completa los hacen redundantes.
@@ -128,3 +128,11 @@ Versiones instaladas: `eslint` 10.13.0, `typescript-eslint` 8.72.1 y `eslint-plu
 - Instalación: `npm install -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom @testing-library/user-event`.
 - Si existen `vitest.config.*` y `vite.config.*`, el primero tiene prioridad y el segundo se ignora. La documentación muestra `mergeConfig(viteConfig, defineConfig({ test: { ... } }))` con imports desde `vitest/config`.
 - Cobertura: por defecto solo se reportan los archivos que los tests importan; para incluir el resto se configura `coverage.include` (por ejemplo `['src/**/*.{ts,tsx}']`). `thresholds` acepta `statements`, `branches`, `functions` y `lines` (un número positivo es el porcentaje mínimo). Los reporters por defecto son `text`, `html`, `clover` y `json`, y el directorio es `./coverage`. La documentación no indica el código de salida cuando no se alcanza el umbral; se comprobó en la tarea 3.9: Vitest imprime `ERROR: Coverage for lines (50%) does not meet global threshold (80%)` (uno por indicador) y termina con código 1.
+
+### Husky y lint-staged
+
+- Versiones estables: `husky` 9.1.7 (Node >= 18) y `lint-staged` 17.6.0 (Node >= 22.22.1; el proyecto usa 24.22.1).
+- Instalación: `npm install -D husky lint-staged`. `npx husky init` crea `.husky/pre-commit` y el script `prepare`; aquí se hace a mano (`"prepare": "husky"` y un `.husky/pre-commit` propio) porque el hook por defecto de `init` ejecuta `npm test`.
+- Los hooks de Husky 9 son archivos de shell sin shebang ni `husky.sh`; el hook de ejemplo de lint-staged es solo `npx lint-staged`.
+- lint-staged se configura en un archivo propio, `lint-staged.config.ts`, que la versión instalada acepta de forma nativa y tipa con `Configuration` (`import type { Configuration } from 'lint-staged'`), igual que `prettier.config.ts` y `vitest.config.ts`; el archivo se añade a `include` de `tsconfig.node.json`. Es un objeto con un glob por clave y un comando o array de comandos como valor. Los comandos de un array corren en secuencia y, si uno falla, no se ejecutan los siguientes. Añade al commit las correcciones que hagan `eslint --fix` y `prettier --write`, y respalda el estado en un stash que restaura si algo falla.
+- Los archivos ignorados los decide cada herramienta (por ejemplo `.prettierignore`), porque lint-staged pasa igualmente todos los que coinciden con el glob. La documentación sugiere `--ignore-unknown` para tipos de archivo mezclados. Comprobado en la tarea 4.3: Prettier omite sin error los archivos de `openspec/` que lint-staged le pasa (el archivo queda intacto y lint-staged termina con código 0).
