@@ -69,7 +69,7 @@ Se añade a `eslint.config.js` un bloque de reglas, adaptadas de una config prev
 - Recomendadas: `curly`, `eqeqeq` (`'always'`, evita la coerción de `==` al comparar montos o ids), `no-console`, `@typescript-eslint/consistent-type-definitions`, `@typescript-eslint/no-shadow` y `react-hooks/exhaustive-deps` en `error` (hoy es warning y no bloquea el commit).
 - Preferencias del equipo: `@typescript-eslint/explicit-function-return-type` (`allowExpressions: true`), `camelcase` (`ignoreDestructuring: true`, `properties: 'never'`), `no-underscore-dangle` (`allowAfterThis: true`) y `no-nested-ternary` (evita ternarios anidados ilegibles en JSX).
 `no-explicit-any` se mantiene en `error` (no se porta el `0` de la config previa). Un override apaga `explicit-function-return-type` en los tests (`**/*.test.{ts,tsx}` y `src/test/**`).
-`explicit-function-return-type` no distingue componentes de funciones normales, así que por ahora aplica a todo el código. Cómo ajustarla para componentes (por ejemplo, limitarla a archivos `.ts` o tipar el retorno con `JSX.Element`) se decide al construir la aplicación, cuando existan componentes reales.
+`explicit-function-return-type` no distingue componentes de funciones normales, así que por ahora aplica a todo el código. Los componentes se escriben como funciones flecha tipadas con `FC` (`const App: FC<Props> = () => ...`), lo que satisface la regla porque la variable ya tiene tipo (`allowTypedFunctionExpressions`). Cualquier ajuste adicional para componentes se decide al construir la aplicación, cuando existan componentes reales.
 No se porta: `eslint-config-airbnb` (peers solo hasta ESLint 8 y reglas de formato/estilo que ya cubre Prettier), `plugin:prettier/recommended` (contradice la decisión 1), `env: jest` (Vitest con imports explícitos), los `settings` de `import/*`, `jsx-filename-extension`, `require-default-props` y las reglas de `react/*` (dependen de `eslint-plugin-react`, que no declara soporte para ESLint 10).
 *Alternativa:* bajar a ESLint 9 para poder usar `eslint-plugin-react` e `import`. Descartada: sacrifica la versión actual por reglas de estilo.
 
@@ -102,3 +102,20 @@ Se completa durante el apply, con la primera tarea de cada grupo: una subsecció
 - Instalación: `npm install -D prettier`.
 - Config en TypeScript: `prettier.config.ts` está entre los nombres que Prettier busca. Requiere Node >= 22.6.0 y, antes de Node 24.3.0, el flag `--experimental-strip-types`; con Node 24.22.1 no hace falta flag. La documentación usa `import { type Config } from 'prettier'`.
 - `.prettierignore`: sintaxis de gitignore, en la raíz. Prettier ignora por defecto `.git` y `node_modules`, y respeta `.gitignore` si existe. La documentación no dice qué ocurre con un archivo ignorado que se pasa explícitamente por CLI (como hace lint-staged); se comprueba en la tarea 4.3.
+
+### Reglas de ESLint
+
+Versiones instaladas: `eslint` 10.13.0, `typescript-eslint` 8.72.1 y `eslint-plugin-react-hooks` 7.1.1. Las 10 reglas existen y aceptan las opciones previstas, comprobado leyendo el `meta.schema` de cada regla instalada:
+
+| Regla | Configuración |
+| --- | --- |
+| `curly` | `'error'` (por defecto `all`) |
+| `eqeqeq` | `['error', 'always']` |
+| `no-console` | `'error'` |
+| `@typescript-eslint/consistent-type-definitions` | `'error'` (por defecto `interface`) |
+| `@typescript-eslint/no-shadow` | `'error'` |
+| `react-hooks/exhaustive-deps` | `'error'` |
+| `@typescript-eslint/explicit-function-return-type` | `['error', { allowExpressions: true }]` |
+| `camelcase` | `['error', { ignoreDestructuring: true, properties: 'never' }]` |
+| `no-underscore-dangle` | `['error', { allowAfterThis: true }]` |
+| `no-nested-ternary` | `'error'` |

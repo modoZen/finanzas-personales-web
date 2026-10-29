@@ -11,10 +11,10 @@
 
 ## 2. Reglas de ESLint
 
-- [ ] 2.1 Consultar la documentación de las reglas (núcleo de ESLint, `typescript-eslint` y `react-hooks`) en las versiones instaladas, confirmar nombres y opciones y registrarlo en "Compatibilidad verificada" de `design.md`; verificar que la sección lista las 10 reglas con sus opciones
-- [ ] 2.2 Añadir a `eslint.config.js` un bloque con las 10 reglas de la decisión 10 y el override de tests (`**/*.test.{ts,tsx}` y `src/test/**` sin `explicit-function-return-type`); verificar con `npx eslint --print-config src/App.tsx` que las 10 reglas están activas con las opciones esperadas y que `no-explicit-any` sigue en error
-- [ ] 2.3 Corregir el código existente que incumpla las reglas (p. ej. el tipo de retorno de `App` y el parámetro `count` que sombrea a la variable de estado) sin desactivar ninguna regla; verificar que `npm run lint` pasa
-- [ ] 2.4 Verificar que cada regla se dispara con un archivo temporal que incumpla las 10 (sin commitearlo) y que el override de tests silencia solo `explicit-function-return-type`
+- [x] 2.1 Consultar la documentación de las reglas (núcleo de ESLint, `typescript-eslint` y `react-hooks`) en las versiones instaladas, confirmar nombres y opciones y registrarlo en "Compatibilidad verificada" de `design.md`; verificar que la sección lista las 10 reglas con sus opciones
+- [x] 2.2 Añadir a `eslint.config.js` un bloque con las 10 reglas de la decisión 10 y el override de tests (`**/*.test.{ts,tsx}` y `src/test/**` sin `explicit-function-return-type`); verificar con `npx eslint --print-config src/App.tsx` que las 10 reglas están activas con las opciones esperadas y que `no-explicit-any` sigue en error
+- [x] 2.3 Corregir el código existente que incumpla las reglas (p. ej. tipar `App` como `FC` y el parámetro `count` que sombrea a la variable de estado) sin desactivar ninguna regla; verificar que `npm run lint` pasa
+- [x] 2.4 Verificar que cada regla se dispara con un archivo temporal que incumpla las 10 (sin commitearlo) y que el override de tests silencia solo `explicit-function-return-type`
 
 ## 3. Vitest y cobertura
 
