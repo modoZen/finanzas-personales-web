@@ -1,80 +1,48 @@
-# React + TypeScript + Vite
+# Finanzas personales (web)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web de finanzas personales hecha con React 19, TypeScript y Vite.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react)
-  uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc)
-  uses [SWC](https://swc.rs/)
+- Node.js 24 o superior.
+- npm.
 
-## React Compiler
+## Instalación
 
-The React Compiler is not enabled on this template because of its impact on dev & build
-performances. To add it, see
-[this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable
-type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and
-[eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint
-rules:
+`npm install` también ejecuta el script `prepare`, que activa los hooks de Git con Husky. No hace
+falta ningún paso manual adicional.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+| Script                  | Qué hace                                                                 |
+| ----------------------- | ------------------------------------------------------------------------ |
+| `npm run dev`           | Servidor de desarrollo con Vite.                                         |
+| `npm run build`         | Verifica los tipos (`tsc -b`) y genera el build de producción.           |
+| `npm run preview`       | Sirve localmente el build generado.                                      |
+| `npm run lint`          | Ejecuta ESLint sobre todo el proyecto.                                   |
+| `npm run format`        | Formatea el proyecto con Prettier.                                       |
+| `npm run format:check`  | Comprueba el formato sin modificar archivos.                             |
+| `npm test`              | Ejecuta los tests una vez con Vitest.                                    |
+| `npm run test:watch`    | Ejecuta los tests en modo observación.                                   |
+| `npm run test:coverage` | Ejecuta los tests con cobertura; falla si algún indicador baja del 80 %. |
+
+## Hook de pre-commit
+
+Cada `git commit` ejecuta, en este orden y deteniéndose en el primer fallo:
+
+1. **lint-staged**: sobre los archivos staged, `eslint --fix` y `prettier --write` para `.ts` y
+   `.tsx`, y `prettier --write` para `.json`, `.css`, `.html` y `.md`. Las correcciones se añaden al
+   commit.
+2. **`npm run build`**: compila el proyecto y verifica los tipos.
+3. **`npm run test:coverage`**: ejecuta los tests y exige un 80 % de cobertura en statements,
+   branches, functions y lines.
+
+Si alguno de los pasos falla, el commit se rechaza. En una emergencia se puede saltar el hook con
+`git commit --no-verify`.
+
+Prettier no formatea los archivos generados por herramientas externas: `openspec/` y `.claude/` (ver
+`.prettierignore`).
