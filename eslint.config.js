@@ -19,4 +19,25 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      curly: 'error',
+      eqeqeq: ['error', 'always'],
+      'no-console': 'error',
+      '@typescript-eslint/consistent-type-definitions': 'error',
+      '@typescript-eslint/no-shadow': 'error',
+      'react-hooks/exhaustive-deps': 'error',
+      '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
+      camelcase: ['error', { ignoreDestructuring: true, properties: 'never' }],
+      'no-underscore-dangle': ['error', { allowAfterThis: true }],
+      'no-nested-ternary': 'error',
+    },
+  },
+  {
+    files: ['**/*.test.{ts,tsx}', 'src/test/**'],
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
+  },
 ]);

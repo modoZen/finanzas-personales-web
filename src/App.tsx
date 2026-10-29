@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, type FC } from 'react';
 import heroImg from './assets/hero.png';
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import './App.css';
 
-function App() {
+const App: FC = () => {
   const [count, setCount] = useState(0);
 
   return (
@@ -21,7 +21,7 @@ function App() {
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>
         </div>
-        <button type='button' className='counter' onClick={() => setCount((count) => count + 1)}>
+        <button type='button' className='counter' onClick={() => setCount((prev) => prev + 1)}>
           Count is {count}
         </button>
       </section>
@@ -97,6 +97,6 @@ function App() {
       <section id='spacer'></section>
     </>
   );
-}
+};
 
 export default App;
