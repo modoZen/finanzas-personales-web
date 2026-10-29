@@ -32,8 +32,8 @@ Valores definidos por el equipo: `printWidth: 100`, `tabWidth: 2`, `useTabs: fal
 *Alternativa:* `.prettierrc` JSON. Descartada: no permite tipado ni comentarios.
 Verificado con Prettier 3.9.10 y Node 24.22.1: un `prettier.config.ts` con `import type { Config } from 'prettier'` carga y formatea correctamente. Condiciones: `"type": "module"` en `package.json` (ya presente) y un Node con soporte nativo de TypeScript (Node 24 lo trae). El archivo se añade a `include` de `tsconfig.node.json` para que `tsc -b` lo revise.
 
-**3. `.prettierignore` excluye `openspec/` además de lo habitual.**
-Con `proseWrap: 'always'` Prettier reescribiría los `.md` de OpenSpec, que genera y mantiene el CLI. Solo se formatean archivos del proyecto. También se ignoran `dist`, `coverage`, `node_modules` y `package-lock.json`.
+**3. `.prettierignore` excluye `openspec/` y `.claude/` además de lo habitual.**
+Con `proseWrap: 'always'` Prettier reescribiría los `.md` de OpenSpec, que genera y mantiene el CLI, y los comandos y skills que `openspec init` generó en `.claude/`. Solo se formatean archivos del proyecto. También se ignoran `dist`, `coverage`, `node_modules` y `package-lock.json`.
 
 **4. Vitest configurado en `vitest.config.ts` separado.**
 Cuando existen `vitest.config.ts` y `vite.config.ts`, Vitest usa el primero e ignora el segundo, así que `vitest.config.ts` importa la config de Vite y la combina con `mergeConfig(viteConfig, defineConfig({ test: { ... } }))` para reutilizar el plugin de React y la resolución. Entorno `jsdom`, `globals: false` (imports explícitos) y un `setupFiles` con `@testing-library/jest-dom/vitest`. Los tests viven junto al código (`*.test.ts(x)`). El archivo se añade a `include` de `tsconfig.node.json`.
@@ -94,4 +94,11 @@ No se porta: `eslint-config-airbnb` (peers solo hasta ESLint 8 y reglas de forma
 
 ## Compatibilidad verificada
 
-_Pendiente. Se completa durante el apply, con la primera tarea de cada grupo (versión estable, compatibilidad con Vite 8 / TS 6 / Node 24 y pasos de instalación de cada herramienta)._
+Se completa durante el apply, con la primera tarea de cada grupo: una subsección por herramienta.
+
+### Prettier
+
+- Versión estable: 3.9.10.
+- Instalación: `npm install -D prettier`.
+- Config en TypeScript: `prettier.config.ts` está entre los nombres que Prettier busca. Requiere Node >= 22.6.0 y, antes de Node 24.3.0, el flag `--experimental-strip-types`; con Node 24.22.1 no hace falta flag. La documentación usa `import { type Config } from 'prettier'`.
+- `.prettierignore`: sintaxis de gitignore, en la raíz. Prettier ignora por defecto `.git` y `node_modules`, y respeta `.gitignore` si existe. La documentación no dice qué ocurre con un archivo ignorado que se pasa explícitamente por CLI (como hace lint-staged); se comprueba en la tarea 4.3.

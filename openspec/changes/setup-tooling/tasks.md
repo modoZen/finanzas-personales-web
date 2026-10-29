@@ -2,12 +2,12 @@
 
 ## 1. Prettier
 
-- [ ] 1.1 Consultar la documentación oficial de Prettier (versión estable, config en TypeScript, `.prettierignore`) y registrar versión y pasos en la sección "Compatibilidad verificada" de `design.md`; verificar que la sección lista versión y comando de instalación
-- [ ] 1.2 Instalar `prettier` como devDependency y verificar que `npm ls prettier` no reporta errores
-- [ ] 1.3 Crear `prettier.config.ts` con la configuración de la decisión 2 y verificar que `npx prettier --check prettier.config.ts` carga la config sin error y que `npx tsc -b` la cubre (añadirla a `include` de `tsconfig.node.json`)
-- [ ] 1.4 Crear `.prettierignore` (`dist`, `coverage`, `node_modules`, `package-lock.json`, `openspec`) y verificar que `npx prettier --check .` no lista ningún archivo de esas rutas
-- [ ] 1.5 Añadir scripts `format` y `format:check` a `package.json` y verificar que `npm run format:check` funciona y señala los archivos sin formatear
-- [ ] 1.6 Formatear el repo con `npm run format` en un commit aislado (`style: format with prettier`) y verificar que `npm run format:check` y `npm run lint` pasan sin tocar `eslint.config.js` para formato
+- [x] 1.1 Consultar la documentación oficial de Prettier (versión estable, config en TypeScript, `.prettierignore`) y registrar versión y pasos en la sección "Compatibilidad verificada" de `design.md`; verificar que la sección lista versión y comando de instalación
+- [x] 1.2 Instalar `prettier` como devDependency y verificar que `npm ls prettier` no reporta errores
+- [x] 1.3 Crear `prettier.config.ts` con la configuración de la decisión 2 y verificar que `npx prettier --check prettier.config.ts` carga la config sin error y que `npx tsc -b` la cubre (añadirla a `include` de `tsconfig.node.json`)
+- [x] 1.4 Crear `.prettierignore` (`dist`, `coverage`, `node_modules`, `package-lock.json`, `openspec`, `.claude`) y verificar que `npx prettier --check .` no lista ningún archivo de esas rutas
+- [x] 1.5 Añadir scripts `format` y `format:check` a `package.json` y verificar que `npm run format:check` funciona y señala los archivos sin formatear
+- [x] 1.6 Formatear el repo con `npm run format` en un commit aislado (`style: format with prettier`) y verificar que `npm run format:check` y `npm run lint` pasan sin tocar `eslint.config.js` para formato
 
 ## 2. Reglas de ESLint
 
