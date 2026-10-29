@@ -39,7 +39,7 @@
 
 ## 5. Integración
 
-- [ ] 5.1 Partiendo de un clon limpio (`git clone` + `npm install`), verificar que el hook se activa solo y que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan
+- [x] 5.1 Partiendo de un clon limpio (`git clone` + `npm install`), verificar que el hook se activa solo y que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan
 
 ## Workflow follow-up
 
