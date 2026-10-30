@@ -25,7 +25,7 @@
 
 ## 4. Integración
 
-- [ ] 4.1 Con el árbol limpio, verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan, y que un commit de prueba con una clase desordenada en un `.tsx` staged pasa por el pre-commit y queda reordenada (sin conservar el commit)
+- [x] 4.1 Con el árbol limpio, verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan, y que un commit de prueba con una clase desordenada en un `.tsx` staged pasa por el pre-commit y queda reordenada (sin conservar el commit)
 
 ## Workflow follow-up
 
