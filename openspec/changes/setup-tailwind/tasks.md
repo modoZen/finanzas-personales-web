@@ -8,12 +8,12 @@
 
 ## 2. Estilos y cascarón
 
-- [ ] 2.1 Reemplazar el contenido de `src/index.css` por la importación de Tailwind (`@import 'tailwindcss';`) y verificar que no queda ninguna variable ni regla global del template
-- [ ] 2.2 Reducir `App` a un cascarón con un `h1` "Finanzas personales" y unas pocas clases de Tailwind (centrado, tamaño, peso, color), quitando el import de `App.css` y los assets; verificar que `npx tsc -b` compila y que `npm run lint` pasa
-- [ ] 2.3 Buscar referencias con `grep` y luego eliminar `src/App.css`, `src/assets/hero.png`, `src/assets/react.svg`, `src/assets/vite.svg` y `public/icons.svg`; verificar que el grep no devuelve referencias previas al borrado y que `npm run build` pasa tras borrar (`favicon.svg` se mantiene)
-- [ ] 2.4 Reescribir `src/App.test.tsx` con un test que compruebe el `h1` (rol `heading`, nivel 1) y verificar que `npm test` pasa y que `npm run test:coverage` mantiene al menos 80 % en los cuatro indicadores
-- [ ] 2.5 Verificar que Tailwind aplica estilos: tras `npm run build`, el CSS de `dist/assets/` contiene las utilidades usadas (por ejemplo `.text-center`) y, con `npm run dev`, Max confirma a simple vista que el título se ve centrado, grande y con color
-- [ ] 2.6 Documentar en `README.md` que los estilos se escriben con Tailwind v4 y que los tokens, el dark mode y la estructura de componentes vendrán en changes posteriores; verificar que los comandos mencionados funcionan tal como están escritos
+- [x] 2.1 Reemplazar el contenido de `src/index.css` por la importación de Tailwind (`@import 'tailwindcss';`) y verificar que no queda ninguna variable ni regla global del template
+- [x] 2.2 Reducir `App` a un cascarón con un `h1` "Finanzas personales" y unas pocas clases de Tailwind (centrado, tamaño, peso, color), quitando el import de `App.css` y los assets; verificar que `npx tsc -b` compila y que `npm run lint` pasa
+- [x] 2.3 Buscar referencias con `grep` y luego eliminar `src/App.css`, `src/assets/hero.png`, `src/assets/react.svg`, `src/assets/vite.svg` y `public/icons.svg`; verificar que el grep no devuelve referencias previas al borrado y que `npm run build` pasa tras borrar (`favicon.svg` se mantiene)
+- [x] 2.4 Reescribir `src/App.test.tsx` con un test que compruebe el `h1` (rol `heading`, nivel 1) y verificar que `npm test` pasa y que `npm run test:coverage` mantiene al menos 80 % en los cuatro indicadores
+- [x] 2.5 Verificar que Tailwind aplica estilos: tras `npm run build`, el CSS de `dist/assets/` contiene las utilidades usadas (por ejemplo `.text-center`) y, con `npm run dev`, Max confirma a simple vista que el título se ve centrado, grande y con color
+- [x] 2.6 Documentar en `README.md` que los estilos se escriben con Tailwind v4 y que los tokens, el dark mode y la estructura de componentes vendrán en changes posteriores; verificar que los comandos mencionados funcionan tal como están escritos
 
 ## 3. Orden de clases con Prettier
 

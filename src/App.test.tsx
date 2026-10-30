@@ -1,21 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import App from './App';
 
 describe('App', () => {
-  it('renders the counter starting at zero', () => {
+  it('renders the page title as a level 1 heading', () => {
     render(<App />);
 
-    expect(screen.getByRole('button', { name: /count is 0/i })).toBeInTheDocument();
-  });
-
-  it('increments the counter when the button is clicked', async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await user.click(screen.getByRole('button', { name: /count is/i }));
-
-    expect(screen.getByRole('button', { name: /count is 1/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Finanzas personales' }),
+    ).toBeInTheDocument();
   });
 });

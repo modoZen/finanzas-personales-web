@@ -30,6 +30,16 @@ falta ningún paso manual adicional.
 | `npm run test:watch`    | Ejecuta los tests en modo observación.                                   |
 | `npm run test:coverage` | Ejecuta los tests con cobertura; falla si algún indicador baja del 80 %. |
 
+## Estilos
+
+Los estilos se escriben con clases de [Tailwind CSS](https://tailwindcss.com/) v4, que se integra
+con Vite mediante `@tailwindcss/vite`. La hoja de entrada es `src/index.css` y no hay
+`tailwind.config.js`: la configuración de Tailwind vive en el CSS. Para ver los estilos aplicados,
+levantá el servidor con `npm run dev`.
+
+Los tokens de diseño (paleta y tipografía), el dark mode y la estructura de componentes se definirán
+en changes posteriores. Hasta entonces, los colores que aparecen en las clases son provisionales.
+
 ## Hook de pre-commit
 
 Cada `git commit` ejecuta, en este orden y deteniéndose en el primer fallo:
