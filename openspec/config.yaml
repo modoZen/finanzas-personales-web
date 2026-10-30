@@ -30,3 +30,7 @@ schema: spec-driven
 #     archive:
 #       guidance:
 #         - Summarize the archive outcome before finishing
+operations:
+  apply:
+    guidance:
+      - Pausar al final de cada grupo de tareas para que el usuario haga los commits, dando los comandos git add y git commit con los archivos exactos y un mensaje sugerido, sin commitear por cuenta propia.
