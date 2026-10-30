@@ -61,4 +61,12 @@ jsdom no procesa CSS, así que el test unitario solo comprueba que el título se
 
 ## Compatibilidad verificada
 
-Se completa durante el apply, con la primera tarea del grupo 1: versiones instaladas, forma de registrar el plugin de Vite, sintaxis de importación del CSS, requisitos de navegador y configuración del plugin de Prettier para v4.
+Se completa durante el apply, una subsección por herramienta.
+
+### Tailwind CSS v4 con Vite
+
+- Versión estable: `tailwindcss` y `@tailwindcss/vite` 4.3.3 (comprobado con `npm view`). `@tailwindcss/vite` declara como peer `vite ^5.2.0 || ^6 || ^7 || ^8`, así que admite Vite 8.
+- Instalación: la documentación usa `npm install tailwindcss @tailwindcss/vite`; este proyecto los instala con `-D` (decisión 5).
+- Registro del plugin: `import tailwindcss from '@tailwindcss/vite'` y `tailwindcss()` dentro de `plugins` de `vite.config.ts`. No se necesita `tailwind.config.js` ni `postcss.config.js`.
+- CSS de entrada: `@import "tailwindcss";`. En este proyecto se escribe con comillas simples por la configuración de Prettier (`singleQuote`).
+- Navegadores: Tailwind v4 depende de Chrome 111, Safari 16.4 y Firefox 128 como mínimo. Tailwind incluye algunas utilidades con soporte limitado (`field-sizing: content`, `@starting-style`, `text-wrap: balance`) que se pueden evitar si hace falta.

@@ -2,9 +2,9 @@
 
 ## 1. Instalación de Tailwind
 
-- [ ] 1.1 Consultar la documentación oficial de Tailwind v4 para Vite (versión estable, instalación, registro del plugin, sintaxis de importación del CSS, requisitos de navegador) y registrar versiones y pasos en "Compatibilidad verificada" de `design.md`; verificar que la sección lista versión, comando de instalación y requisito de navegadores
-- [ ] 1.2 Instalar `tailwindcss` y `@tailwindcss/vite` como devDependencies y verificar que `npm ls tailwindcss @tailwindcss/vite` no reporta conflictos de peers con Vite 8
-- [ ] 1.3 Registrar el plugin en `vite.config.ts` junto al de React y verificar que `npm run build` sigue pasando
+- [x] 1.1 Consultar la documentación oficial de Tailwind v4 para Vite (versión estable, instalación, registro del plugin, sintaxis de importación del CSS, requisitos de navegador) y registrar versiones y pasos en "Compatibilidad verificada" de `design.md`; verificar que la sección lista versión, comando de instalación y requisito de navegadores
+- [x] 1.2 Instalar `tailwindcss` y `@tailwindcss/vite` como devDependencies y verificar que `npm ls tailwindcss @tailwindcss/vite` no reporta conflictos de peers con Vite 8
+- [x] 1.3 Registrar el plugin en `vite.config.ts` junto al de React y verificar que `npm run build` sigue pasando
 
 ## 2. Estilos y cascarón
 
