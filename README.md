@@ -37,6 +37,10 @@ con Vite mediante `@tailwindcss/vite`. La hoja de entrada es `src/index.css` y n
 `tailwind.config.js`: la configuración de Tailwind vive en el CSS. Para ver los estilos aplicados,
 levantá el servidor con `npm run dev`.
 
+Prettier ordena las clases de Tailwind automáticamente con `prettier-plugin-tailwindcss`, que lee la
+hoja de entrada a través de la opción `tailwindStylesheet` de `prettier.config.ts`. El orden se
+aplica con `npm run format` y también en el hook de pre-commit.
+
 Los tokens de diseño (paleta y tipografía), el dark mode y la estructura de componentes se definirán
 en changes posteriores. Hasta entonces, los colores que aparecen en las clases son provisionales.
 

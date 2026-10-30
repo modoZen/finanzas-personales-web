@@ -17,11 +17,11 @@
 
 ## 3. Orden de clases con Prettier
 
-- [ ] 3.1 Consultar la documentación de `prettier-plugin-tailwindcss` para Tailwind v4 (cómo indicarle la hoja de estilos de entrada) y registrarla en "Compatibilidad verificada" de `design.md`; verificar que la sección lista la versión y la opción de configuración
-- [ ] 3.2 Instalar `prettier-plugin-tailwindcss` como devDependency y verificar que `npm ls prettier prettier-plugin-tailwindcss` no reporta conflictos de peers
-- [ ] 3.3 Registrar el plugin en `prettier.config.ts` con la opción de la hoja de entrada y verificar que `npx tsc -b` sigue cubriendo el archivo y que `npx prettier --check prettier.config.ts` carga la config sin error
-- [ ] 3.4 Verificar con un archivo temporal con clases desordenadas (sin commitearlo) que `npx prettier --check` lo señala y `--write` las reordena, y que `npm run format:check` pasa en todo el repo
-- [ ] 3.5 Mencionar el plugin en la sección de Prettier del `README.md` y verificar que el texto coincide con lo configurado
+- [x] 3.1 Consultar la documentación de `prettier-plugin-tailwindcss` para Tailwind v4 (cómo indicarle la hoja de estilos de entrada) y registrarla en "Compatibilidad verificada" de `design.md`; verificar que la sección lista la versión y la opción de configuración
+- [x] 3.2 Instalar `prettier-plugin-tailwindcss` como devDependency y verificar que `npm ls prettier prettier-plugin-tailwindcss` no reporta conflictos de peers
+- [x] 3.3 Registrar el plugin en `prettier.config.ts` con la opción de la hoja de entrada y verificar que `npx tsc -b` sigue cubriendo el archivo y que `npx prettier --check prettier.config.ts` carga la config sin error
+- [x] 3.4 Verificar con un archivo temporal con clases desordenadas (sin commitearlo) que `npx prettier --check` lo señala y `--write` las reordena, y que `npm run format:check` pasa en todo el repo
+- [x] 3.5 Mencionar el plugin en la sección de Prettier del `README.md` y verificar que el texto coincide con lo configurado
 
 ## 4. Integración
 

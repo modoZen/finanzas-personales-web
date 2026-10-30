@@ -70,3 +70,10 @@ Se completa durante el apply, una subsección por herramienta.
 - Registro del plugin: `import tailwindcss from '@tailwindcss/vite'` y `tailwindcss()` dentro de `plugins` de `vite.config.ts`. No se necesita `tailwind.config.js` ni `postcss.config.js`.
 - CSS de entrada: `@import "tailwindcss";`. En este proyecto se escribe con comillas simples por la configuración de Prettier (`singleQuote`).
 - Navegadores: Tailwind v4 depende de Chrome 111, Safari 16.4 y Firefox 128 como mínimo. Tailwind incluye algunas utilidades con soporte limitado (`field-sizing: content`, `@starting-style`, `text-wrap: balance`) que se pueden evitar si hace falta.
+
+### prettier-plugin-tailwindcss
+
+- Versión estable: 0.8.1 (comprobado con `npm view`), con peer `prettier ^3.0` y Node >= 20.19. Es ESM-only, lo que no afecta a `prettier.config.ts`.
+- Instalación: `npm install -D prettier-plugin-tailwindcss`.
+- Registro: se agrega `'prettier-plugin-tailwindcss'` al arreglo `plugins` de la configuración de Prettier. Solo necesita ir último cuando hay otros plugins de Prettier, y aquí no hay ninguno.
+- Opción para Tailwind v4: `tailwindStylesheet`, obligatoria con v4 según su README. Indica la hoja de entrada (aquí `./src/index.css`) y la ruta es relativa al archivo de configuración de Prettier, no al archivo que se formatea.

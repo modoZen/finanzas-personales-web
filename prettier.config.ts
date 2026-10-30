@@ -1,6 +1,7 @@
 import type { Config } from 'prettier';
+import type { PluginOptions } from 'prettier-plugin-tailwindcss';
 
-const prettierConfig: Config = {
+const prettierConfig: Config & PluginOptions = {
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
@@ -14,6 +15,8 @@ const prettierConfig: Config = {
   arrowParens: 'always',
   proseWrap: 'always',
   endOfLine: 'auto',
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindStylesheet: './src/index.css',
 };
 
 export default prettierConfig;
