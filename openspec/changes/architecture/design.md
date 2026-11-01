@@ -2,7 +2,7 @@
 
 ## Context
 
-Proyecto Vite 8 + React 19 + TypeScript, con `src/` reducido a `App.tsx`, `main.tsx`, `index.css`, `App.test.tsx` y `test/setup.ts` (el setup global de Vitest, referenciado desde `vitest.config.ts` y `eslint.config.js`). No hay router, ni carpetas de módulos, ni alias de imports, ni `CLAUDE.md`. `openspec/config.yaml` solo tiene la guía de commits por grupo en `operations.apply.guidance`; el resto son comentarios de ejemplo. Los imports actuales usan rutas relativas con extensión (`./App.tsx`). Motivación y alcance en `proposal.md`.
+Proyecto Vite 8 + React 19 + TypeScript, con `src/` reducido a `App.tsx`, `main.tsx`, `index.css`, `App.test.tsx` y `test/setup.ts` (el setup global de Vitest, referenciado desde `vitest.config.ts` y `eslint.config.js`). No hay router, ni carpetas de módulos, ni alias de imports, ni `CLAUDE.md`. `openspec/config.yaml` solo tiene la guía de commits por grupo en `operations.apply.guidance`; el resto son comentarios de ejemplo. Antes de este change, `main.tsx` importaba `./App.tsx` (con extensión) y `App.test.tsx` importaba `./App` (sin extensión). Motivación y alcance en `proposal.md`.
 
 Restricciones: `vitest.config.ts` hace `mergeConfig(viteConfig, ...)`, así que hereda lo que se declare en `vite.config.ts`; `tsconfig.app.json` usa `moduleResolution: "bundler"` y `allowImportingTsExtensions`; `tsconfig.node.json` cubre `vite.config.ts` con `module: "nodenext"` y `@types/node`; el pre-commit ejecuta lint-staged, build y tests con cobertura mínima del 80 %.
 
@@ -27,7 +27,7 @@ Restricciones: `vitest.config.ts` hace `mergeConfig(viteConfig, ...)`, así que 
 *Alternativa:* una spec `architecture` con requisitos y escenarios. Descartada: las specs describen qué hace el sistema, y "un módulo no importa de otro" se revisa leyendo imports, no con un escenario.
 
 **2. Dos documentos: estructura y convenciones de código.**
-`architecture.md` trata solo de carpetas, archivos y dependencias entre ellos. `conventions.md` recoge lo que no es de archivos ni carpetas (`FC` con flecha, sin `enum`, idioma, Conventional Commits). Separarlos evita que el primero se llene de reglas de estilo y permite leer cada uno por separado.
+`architecture.md` trata solo de carpetas, archivos y dependencias entre ellos. `conventions.md` recoge lo que no es de archivos ni carpetas (`FC` con flecha, sin `enum`, idioma, Conventional Commits, imports sin extensión). Separarlos evita que el primero se llene de reglas de estilo y permite leer cada uno por separado.
 *Alternativa:* un único documento. Descartada: mezcla dos ritmos de cambio, ya que la estructura se toca en cada change de arquitectura y las convenciones casi nunca.
 
 **3. Reglas firmes y reglas provisionales marcadas en el propio texto.**
@@ -50,13 +50,13 @@ Se descartó `eslint-plugin-boundaries`: con revisión de PR por el autor y gran
 *Alternativa:* `vite-tsconfig-paths`. Descartada: añade una dependencia para algo que se resuelve con dos líneas de configuración.
 
 **8. El alias se verifica con un import real, no con un archivo de prueba.**
-`src/main.tsx` pasa a importar `@/App.tsx`, manteniendo el estilo de extensión explícita que ya usa el proyecto. Si el alias falla en TypeScript, Vite o Vitest, rompen `npm run build` y `npm test`. El import queda en el código: es el uso real del alias.
+`src/main.tsx` pasa a importar `@/App`, sin extensión, igual que ya hace `App.test.tsx`: con `moduleResolution: "bundler"` la extensión no se necesita, y la regla queda escrita en `docs/conventions.md`. Si el alias falla en TypeScript, Vite o Vitest, rompen `npm run build` y `npm test`. El import queda en el código: es el uso real del alias.
 
 **9. No se crea ninguna carpeta de `src/`.**
 `app/`, `core/`, `shared/`, `proxy/` y `domain/` están descritas en el documento pero no existen, siguiendo la regla 3 (las carpetas nacen cuando se usan). Git no versiona carpetas vacías y un `.gitkeep` solo ocultaría que nada las usa.
 
 **10. `src/App.test.tsx` se mueve a `src/__tests__/App.test.tsx` en este change.**
-La regla 17 dice que los tests de la raíz de `src/` viven en `src/__tests__/`, y el código existente debe cumplirla desde el primer día. Su import pasa a ser relativo (`../App.tsx`), porque ambos están en la misma carpeta de primer nivel (regla 13). No queda ninguna excepción vigente a la regla.
+La regla 17 dice que los tests de la raíz de `src/` viven en `src/__tests__/`, y el código existente debe cumplirla desde el primer día. Su import pasa a ser relativo y sin extensión (`../App`), porque ambos están en la misma carpeta de primer nivel (regla 13). No queda ninguna excepción vigente a la regla.
 
 **11. Setup global y helpers de test.**
 El setup global de Vitest pasa de `src/test/setup.ts` a `src/setup-tests.ts`, y `src/test/` desaparece, para que no convivan `test/` y `__tests__/`. Hay tres referencias que actualizar: `setupFiles` y la exclusión de cobertura en `vitest.config.ts`, y el override de tests en `eslint.config.js`. Los helpers de test reutilizables viven en `test-utils/`: en `shared/test-utils/` los que no necesitan nada de la app (la regla 9 les aplica igual) y en `core/test-utils/` los que necesitan providers de la app, por ejemplo un `render` con router y `QueryClient`. Ni `src/setup-tests.ts` ni las carpetas `test-utils/` cuentan para la cobertura y llevan el mismo override de ESLint que los tests. Las carpetas `test-utils/` no se crean todavía (regla 3).
@@ -89,6 +89,18 @@ Los componentes, páginas, layouts y el router del módulo van en `PascalCase.ts
 5. Modificar `openspec/config.yaml`: `context`, `rules.tasks` y la guía de `apply`.
 6. Mencionar los documentos en `README.md`.
 7. Rollback: revertir los commits de este change; no hay datos ni migraciones.
+
+## Compatibilidad verificada
+
+Se completa durante el apply, una subsección por herramienta.
+
+### Alias `@/` con Vite y TypeScript
+
+- Versiones instaladas: Vite 8.3.5, TypeScript 6.0.3 y Vitest 5.0.5.
+- Vite, `resolve.alias`: acepta un objeto (`Record<string, string>`) o un arreglo de `{ find, replacement }`. La documentación indica que, al apuntar a rutas del sistema de archivos, se usen siempre rutas absolutas, porque un valor relativo se usa tal cual y no se resuelve. Por eso la configuración calcula la ruta con `fileURLToPath(new URL('./src', import.meta.url))`. La página no menciona `fileURLToPath`; es una forma estándar de obtener una ruta absoluta en ESM.
+- TypeScript, `paths`: cada entrada reasigna un import a una ubicación relativa a `baseUrl` si existe, o al propio `tsconfig` si no. Desde TypeScript 4.1 `baseUrl` no es necesario, y su documentación lo desaconseja fuera de cargadores AMD. El patrón con comodín es `"@/*": ["./src/*"]`.
+- `paths` solo informa a TypeScript: no cambia los imports que se emiten, por lo que Vite necesita su propio alias.
+- Vitest: `vitest.config.ts` usa `mergeConfig(viteConfig, ...)`, así que hereda `resolve.alias`.
 
 ## Contenido acordado
 
@@ -196,7 +208,7 @@ mappers/__tests__/transaction.mapper.test.ts
     hooks (`useTransactions.ts`); `kebab-case` para todo lo demás, con sufijo de rol separado por
     punto: `.routes.ts`, `.proxy.ts`, `.mapper.ts`, `.schema.ts`, `.mock.ts`. Los archivos de
     `domain/` y `utils/` van sin sufijo. Las carpetas que no son de un componente ni de un hook van
-    en `kebab-case`.
+    en `kebab-case`, salvo `__tests__/`.
 19. El setup global de Vitest es `src/setup-tests.ts`. Los helpers de test reutilizables viven en
     `test-utils/`: en `shared/test-utils/` los que no necesitan nada de la app (respetan la
     regla 9) y en `core/test-utils/` los que necesitan providers de la app.
@@ -229,6 +241,8 @@ Reglas de código y estilo que no son de carpetas ni archivos (esas viven en `ar
    objetos `as const`.
 3. **Idioma**: código, nombres de archivo y commits en inglés; textos de la interfaz en español.
 4. **Commits**: Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `build:`…).
+5. **Imports sin extensión**: `@/App`, no `@/App.tsx`. Los assets conservan la suya
+   (`./index.css`).
 ````
 
 ### `CLAUDE.md`

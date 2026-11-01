@@ -7,10 +7,10 @@ El proyecto todavía no tiene `app/`, `shared/` ni ninguna regla escrita sobre c
 ## What Changes
 
 - Crear `docs/architecture.md` con la estructura de `src/` (`app/`, `core/`, `shared/`, `proxy/`, `domain/`, `store/`), el catálogo de nombres de un módulo, 20 reglas (estructura, dependencias, rutas, archivos y mantenimiento) y las decisiones abiertas. Las reglas que dependen de código aún inexistente se marcan como provisionales hasta `routing` o `data-layer`.
-- Crear `docs/conventions.md` con las convenciones de código que no son de carpetas ni archivos: componentes `const X: FC<Props> = () =>` (con excepción para genéricos), sin `enum`, idioma (código y commits en inglés, interfaz en español) y Conventional Commits.
+- Crear `docs/conventions.md` con las convenciones de código que no son de carpetas ni archivos: componentes `const X: FC<Props> = () =>` (con excepción para genéricos), sin `enum`, idioma (código y commits en inglés, interfaz en español), Conventional Commits e imports sin extensión.
 - Crear `CLAUDE.md` con una descripción breve del proyecto, los imports `@docs/architecture.md` y `@docs/conventions.md`, y la regla de idioma de las respuestas (español).
 - Modificar `openspec/config.yaml`: `context` con el idioma de los artefactos (contenido en español, estructura en inglés), `rules.tasks` para que todo change que decida estructura incluya una tarea que actualice `docs/architecture.md`, y `operations.apply.guidance` para que la verificación del apply compruebe que el change respeta ambos documentos.
-- Agregar el alias `@/` → `src/` en `tsconfig.app.json` (`paths`) y en `vite.config.ts` (`resolve.alias`), y comprobar que Vitest lo hereda. Se verifica cambiando el import de `App` en `main.tsx` a `@/App.tsx`.
+- Agregar el alias `@/` → `src/` en `tsconfig.app.json` (`paths`) y en `vite.config.ts` (`resolve.alias`), y comprobar que Vitest lo hereda. Se verifica cambiando el import de `App` en `main.tsx` a `@/App`.
 - Mencionar los documentos en `README.md`.
 - Mover el setup global de Vitest de `src/test/setup.ts` a `src/setup-tests.ts` y actualizar sus rutas en `vitest.config.ts` (`setupFiles` y exclusión de cobertura) y en `eslint.config.js` (override de los tests). La carpeta `src/test/` desaparece.
 - Mover `src/App.test.tsx` a `src/__tests__/App.test.tsx`, según la regla de que los tests de la raíz de `src/` viven en `src/__tests__/`.
