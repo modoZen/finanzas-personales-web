@@ -14,9 +14,9 @@
 
 ## 3. Documentos de reglas
 
-- [ ] 3.1 Crear `docs/architecture.md` con el texto de `design.md` (sección "Contenido acordado") y verificar que tiene las 20 reglas numeradas, las marcas de provisional en las reglas 10, 11, 12, 14, 15 y 16, las decisiones abiertas y ninguna sección de excepciones, y que `npx prettier --check docs/architecture.md` pasa
-- [ ] 3.2 Verificar que lo que existe hoy en `src/` cumple las reglas de `docs/architecture.md`: con `git ls-files src`, comprobar que `setup-tests.ts` y `__tests__/App.test.tsx` están presentes, que `src/test/` ya no existe y que `App.tsx` y `App.test.tsx` están en `PascalCase` (el árbol describe la estructura objetivo, por lo que no se compara archivo por archivo)
-- [ ] 3.3 Crear `docs/conventions.md` con el texto de `design.md` y verificar que tiene las cinco reglas, que el código actual las cumple (`src/App.tsx` usa `const App: FC`, `grep -rn "enum " src` no devuelve resultados y `grep -rnE "from .*\.tsx?['\"]" src` tampoco) y que `npx prettier --check docs/conventions.md` pasa
+- [x] 3.1 Crear `docs/architecture.md` con el texto de `design.md` (sección "Contenido acordado") y verificar que tiene las 20 reglas numeradas, las marcas de provisional en las reglas 10, 11, 12, 14, 15 y 16, las decisiones abiertas y ninguna sección de excepciones, y que `npx prettier --check docs/architecture.md` pasa
+- [x] 3.2 Verificar que lo que existe hoy en `src/` cumple las reglas de `docs/architecture.md`: con `git ls-files src`, comprobar que `setup-tests.ts` y `__tests__/App.test.tsx` están presentes, que `src/test/` ya no existe y que `App.tsx` y `App.test.tsx` están en `PascalCase` (el árbol describe la estructura objetivo, por lo que no se compara archivo por archivo)
+- [x] 3.3 Crear `docs/conventions.md` con el texto de `design.md` y verificar que tiene las cinco reglas, que el código actual las cumple (`src/App.tsx` usa `const App: FC`, `grep -rn "enum " src` no devuelve resultados y `grep -rnE "from .*\.tsx?['\"]" src` tampoco) y que `npx prettier --check docs/conventions.md` pasa
 
 ## 4. `CLAUDE.md` y configuración de OpenSpec
 
