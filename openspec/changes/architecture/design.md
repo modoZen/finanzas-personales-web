@@ -102,6 +102,16 @@ Se completa durante el apply, una subsección por herramienta.
 - `paths` solo informa a TypeScript: no cambia los imports que se emiten, por lo que Vite necesita su propio alias.
 - Vitest: `vitest.config.ts` usa `mergeConfig(viteConfig, ...)`, así que hereda `resolve.alias`.
 
+### Imports en `CLAUDE.md` (Claude Code)
+
+- Fuente: la página "How Claude remembers your project" de la documentación de Claude Code.
+- Sintaxis: `@ruta/al/archivo` dentro del texto del `CLAUDE.md`. Los archivos importados se expanden y se cargan en el contexto junto con el `CLAUDE.md` que los referencia.
+- Las rutas relativas se resuelven respecto al archivo que contiene el import, no respecto al directorio de trabajo. Desde el `CLAUDE.md` de la raíz, `@docs/architecture.md` apunta al archivo correcto. Profundidad máxima: cuatro saltos.
+- El parser ignora los code spans y los bloques de código: para mencionar una ruta sin importarla hay que envolverla en backticks, y para importarla debe ir fuera de ellos. Por eso los dos imports van en líneas propias, sin backticks.
+- Los imports que resuelven fuera del directorio de trabajo piden aprobación; los dos de este proyecto están dentro, así que no la necesitan.
+- Los imports no reducen el costo de contexto: se cargan igual que el `CLAUDE.md`. La documentación recomienda archivos de menos de 200 líneas; `architecture.md` (unas 120) y `conventions.md` (unas 12) caben.
+- Verificación: ejecutar `/context` en una sesión nueva y comprobar la lista bajo **Memory files**.
+
 ## Contenido acordado
 
 Texto de partida de cada archivo, tal como se acordó en la exploración. El apply lo usa como fuente; Prettier puede reajustar el ajuste de líneas (`proseWrap: always`).
@@ -259,8 +269,8 @@ Responder siempre en español.
 
 ## Documentos
 
-@docs/architecture.md
-@docs/conventions.md
+- @docs/architecture.md
+- @docs/conventions.md
 ````
 
 ### `openspec/config.yaml`

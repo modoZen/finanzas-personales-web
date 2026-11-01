@@ -8,6 +8,9 @@ schema: spec-driven
 #   context: |
 #     Designs and tasks must cover Windows, macOS, and Linux
 #     Write all artifacts in Spanish
+context: |
+  Escribir todos los artefactos de OpenSpec en español. La estructura (encabezados de las plantillas y palabras clave de las specs, como ADDED Requirements o Scenario) se mantiene en inglés.
+  Las reglas de estructura y de código del proyecto viven en docs/architecture.md y docs/conventions.md.
 
 # Per-artifact rules (optional)
 # Add custom rules for specific artifacts.
@@ -18,6 +21,9 @@ schema: spec-driven
 #       - Always state what is out of scope
 #     tasks:
 #       - Break tasks into chunks of max 2 hours
+rules:
+  tasks:
+    - Si el change decide estructura de carpetas, archivos o dependencias entre carpetas, incluir una tarea que actualice docs/architecture.md y diga cómo se verifica.
 
 # Per-operation guidance (optional)
 # Add advisory guidance for how apply and archive work should be conducted.
@@ -34,3 +40,4 @@ operations:
   apply:
     guidance:
       - Pausar al final de cada grupo de tareas para que el usuario haga los commits, dando los comandos git add y git commit con los archivos exactos y un mensaje sugerido, sin commitear por cuenta propia.
+      - En la verificación, comprobar que el change respeta docs/architecture.md y docs/conventions.md, y que docs/architecture.md quedó actualizado si el change decidió estructura.

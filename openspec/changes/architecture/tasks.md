@@ -20,9 +20,9 @@
 
 ## 4. `CLAUDE.md` y configuración de OpenSpec
 
-- [ ] 4.1 Consultar la documentación de Claude Code sobre imports en `CLAUDE.md` (sintaxis `@ruta`) y registrar la forma exacta en "Compatibilidad verificada" de `design.md`; luego crear `CLAUDE.md` con la descripción breve, el idioma de las respuestas y los dos imports, y verificar que Max confirma en una sesión nueva que se cargan `docs/architecture.md` y `docs/conventions.md`
-- [ ] 4.2 Modificar `openspec/config.yaml` con `context` (idioma de los artefactos), `rules.tasks` (tarea de actualización del documento al decidir estructura) y la guía de verificación en `operations.apply.guidance`, conservando la guía de commits existente; verificar que `openspec instructions tasks --change architecture --json` muestra la regla en `rules` y el contexto en `context`, y que `openspec status --change architecture` sigue funcionando
-- [ ] 4.3 Verificar que la regla de idioma de `CLAUDE.md` y la de `context` en `config.yaml` coinciden (respuestas en español; artefactos en español con estructura en inglés) leyendo ambos archivos
+- [x] 4.1 Consultar la documentación de Claude Code sobre imports en `CLAUDE.md` (sintaxis `@ruta`) y registrar la forma exacta en "Compatibilidad verificada" de `design.md`; luego crear `CLAUDE.md` con la descripción breve, el idioma de las respuestas y los dos imports, y verificar que Max confirma en una sesión nueva que se cargan `docs/architecture.md` y `docs/conventions.md`
+- [x] 4.2 Modificar `openspec/config.yaml` con `context` (idioma de los artefactos), `rules.tasks` (tarea de actualización del documento al decidir estructura) y la guía de verificación en `operations.apply.guidance`, conservando la guía de commits existente; verificar que `openspec instructions tasks --change architecture --json` muestra la regla en `rules` y el contexto en `context`, y que `openspec status --change architecture` sigue funcionando
+- [x] 4.3 Verificar que la regla de idioma de `CLAUDE.md` y la de `context` en `config.yaml` coinciden (respuestas en español; artefactos en español con estructura en inglés) leyendo ambos archivos
 
 ## 5. README e integración
 
