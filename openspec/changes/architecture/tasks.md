@@ -26,8 +26,8 @@
 
 ## 5. README e integración
 
-- [ ] 5.1 Agregar al `README.md` una sección que enlace `docs/architecture.md` y `docs/conventions.md`, y verificar que los enlaces apuntan a archivos existentes y que `npm run format:check` pasa
-- [ ] 5.2 Con el árbol limpio, verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan, y que la cobertura mantiene al menos 80 % en los cuatro indicadores
+- [x] 5.1 Agregar al `README.md` una sección que enlace `docs/architecture.md` y `docs/conventions.md`, y verificar que los enlaces apuntan a archivos existentes y que `npm run format:check` pasa
+- [x] 5.2 Con el árbol limpio, verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan, y que la cobertura mantiene al menos 80 % en los cuatro indicadores
 
 ## Workflow follow-up
 

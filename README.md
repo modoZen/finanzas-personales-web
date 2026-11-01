@@ -30,6 +30,19 @@ falta ningún paso manual adicional.
 | `npm run test:watch`    | Ejecuta los tests en modo observación.                                   |
 | `npm run test:coverage` | Ejecuta los tests con cobertura; falla si algún indicador baja del 80 %. |
 
+## Arquitectura y convenciones
+
+La estructura de carpetas, las reglas de dependencia entre ellas y las convenciones de código están
+documentadas en `docs/`:
+
+- [`docs/architecture.md`](docs/architecture.md): estructura de `src/`, catálogo de un módulo y
+  reglas de dependencias, nombres y tests.
+- [`docs/conventions.md`](docs/conventions.md): convenciones de código (componentes, `enum`, idioma,
+  commits e imports).
+
+Los imports entre carpetas de primer nivel usan el alias `@/` (apunta a `src/`). Todo change que
+decida estructura actualiza `docs/architecture.md` como una tarea más.
+
 ## Estilos
 
 Los estilos se escriben con clases de [Tailwind CSS](https://tailwindcss.com/) v4, que se integra
