@@ -35,7 +35,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/*.test.{ts,tsx}', 'src/test/**'],
+    files: ['**/*.test.{ts,tsx}', 'src/setup-tests.ts', '**/test-utils/**'],
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'off',
     },

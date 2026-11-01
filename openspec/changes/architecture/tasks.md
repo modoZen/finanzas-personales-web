@@ -9,8 +9,8 @@
 
 ## 2. Setup y tests de la raíz
 
-- [ ] 2.1 Mover `src/test/setup.ts` a `src/setup-tests.ts` con `git mv` y actualizar las tres referencias: `setupFiles` y la exclusión de cobertura en `vitest.config.ts` (que además excluye `**/test-utils/**`), y el override de tests en `eslint.config.js` (que además cubre `**/test-utils/**`); verificar que `grep -rn "src/test" src vitest.config.ts eslint.config.js tsconfig.app.json tsconfig.node.json package.json lint-staged.config.ts .husky` no devuelve resultados, que `src/test/` ya no existe y que `npm test` y `npm run lint` pasan
-- [ ] 2.2 Mover `src/App.test.tsx` a `src/__tests__/App.test.tsx` con `git mv`, cambiando su import de `App` a `../App` (sin extensión); verificar que `npm test` pasa, que `npx tsc -b` compila y que `npm run test:coverage` mantiene al menos 80 % en los cuatro indicadores
+- [x] 2.1 Mover `src/test/setup.ts` a `src/setup-tests.ts` con `git mv` y actualizar las tres referencias: `setupFiles` y la exclusión de cobertura en `vitest.config.ts` (que además excluye `**/test-utils/**`), y el override de tests en `eslint.config.js` (que además cubre `**/test-utils/**`); verificar que `grep -rn "src/test" src vitest.config.ts eslint.config.js tsconfig.app.json tsconfig.node.json package.json lint-staged.config.ts .husky` no devuelve resultados, que `src/test/` ya no existe y que `npm test` y `npm run lint` pasan
+- [x] 2.2 Mover `src/App.test.tsx` a `src/__tests__/App.test.tsx` con `git mv`, cambiando su import de `App` a `../App` (sin extensión); verificar que `npm test` pasa, que `npx tsc -b` compila y que `npm run test:coverage` mantiene al menos 80 % en los cuatro indicadores
 
 ## 3. Documentos de reglas
 
