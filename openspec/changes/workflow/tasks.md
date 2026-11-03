@@ -2,7 +2,7 @@
 
 ## 1. Documento de flujo
 
-- [ ] 1.1 Crear `docs/workflow.md` con el texto de `design.md` (sección "Contenido acordado") y verificar que la primera frase declara que el flujo asume OpenSpec, que `grep -inE "finanzas|src/|architecture\.md|conventions\.md" docs/workflow.md` no devuelve resultados (el documento es genérico), que `wc -l docs/workflow.md` no pasa de 60 líneas y que `npx prettier --check docs/workflow.md` pasa
+- [x] 1.1 Crear `docs/workflow.md` con el texto de `design.md` (sección "Contenido acordado") y verificar que la primera frase declara que el flujo asume OpenSpec, que `grep -inE "finanzas|src/|architecture\.md|conventions\.md" docs/workflow.md` no devuelve resultados (el documento es genérico), que `wc -l docs/workflow.md` no pasa de 60 líneas y que `npx prettier --check docs/workflow.md` pasa
 
 ## 2. Integración en `CLAUDE.md` y `config.yaml`
 
