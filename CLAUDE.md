@@ -11,3 +11,4 @@ Responder siempre en español.
 
 - @docs/architecture.md
 - @docs/conventions.md
+- @docs/workflow.md

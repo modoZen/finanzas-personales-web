@@ -30,15 +30,17 @@ falta ningún paso manual adicional.
 | `npm run test:watch`    | Ejecuta los tests en modo observación.                                   |
 | `npm run test:coverage` | Ejecuta los tests con cobertura; falla si algún indicador baja del 80 %. |
 
-## Arquitectura y convenciones
+## Documentación
 
-La estructura de carpetas, las reglas de dependencia entre ellas y las convenciones de código están
-documentadas en `docs/`:
+La estructura de carpetas, las convenciones de código y el flujo de trabajo están documentados en
+`docs/`:
 
 - [`docs/architecture.md`](docs/architecture.md): estructura de `src/`, catálogo de un módulo y
   reglas de dependencias, nombres y tests.
 - [`docs/conventions.md`](docs/conventions.md): convenciones de código (componentes, `enum`, idioma,
   commits e imports).
+- [`docs/workflow.md`](docs/workflow.md): flujo de trabajo con OpenSpec (ciclo, commits y cuándo se
+  detiene Claude).
 
 Los imports entre carpetas de primer nivel usan el alias `@/` (apunta a `src/`). Todo change que
 decida estructura actualiza `docs/architecture.md` como una tarea más.

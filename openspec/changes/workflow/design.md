@@ -142,15 +142,15 @@ La estructura de carpetas, las convenciones de código y el flujo de trabajo est
 
 ### `openspec/config.yaml`
 
-`operations` queda así (la segunda guía de `apply` no cambia):
+`operations` queda así (la segunda guía de `apply` no cambia). Las frases con `: ` van entre comillas: sin ellas YAML las lee como un mapa y OpenSpec ignora la guía ("must be an array of strings"):
 
 ```yaml
 operations:
   apply:
     guidance:
-      - Seguir docs/workflow.md: pausar al final de cada grupo y entregar los comandos de commit, sin commitear por cuenta propia.
+      - "Seguir docs/workflow.md: pausar al final de cada grupo y entregar los comandos de commit, sin commitear por cuenta propia."
       - En la verificación, comprobar que el change respeta docs/architecture.md y docs/conventions.md, y que docs/architecture.md quedó actualizado si el change decidió estructura.
   archive:
     guidance:
-      - Seguir docs/workflow.md: sin commitear, y entregar el comando de commit del archivado.
+      - "Seguir docs/workflow.md: sin commitear, y entregar el comando de commit del archivado."
 ```

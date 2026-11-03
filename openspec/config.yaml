@@ -39,5 +39,8 @@ rules:
 operations:
   apply:
     guidance:
-      - Pausar al final de cada grupo de tareas para que el usuario haga los commits, dando los comandos git add y git commit con los archivos exactos y un mensaje sugerido, sin commitear por cuenta propia.
+      - "Seguir docs/workflow.md: pausar al final de cada grupo y entregar los comandos de commit, sin commitear por cuenta propia."
       - En la verificación, comprobar que el change respeta docs/architecture.md y docs/conventions.md, y que docs/architecture.md quedó actualizado si el change decidió estructura.
+  archive:
+    guidance:
+      - "Seguir docs/workflow.md: sin commitear, y entregar el comando de commit del archivado."
