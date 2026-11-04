@@ -2,7 +2,7 @@
 
 ## Context
 
-Hoy `src/` solo tiene `App.tsx` (un `<h1>`), `main.tsx`, `index.css` y `setup-tests.ts`; no existen `app/`, `shared/` ni librería de rutas. `docs/architecture.md` ya fija el patrón que este change materializa: un `<Modulo>Router.tsx` y un `<modulo>.routes.ts` por módulo, rutas base en `src/routes.ts`, y carga con `lazy` desde `App.tsx` (reglas 12, 15 y 16, hoy provisionales). Restricciones que condicionan el diseño:
+Hoy `src/` solo tiene `App.tsx` (un `<h1>`), `main.tsx`, `index.css` y `setup-tests.ts`; no existen `app/`, `shared/` ni librería de rutas. `docs/architecture.md` ya fija el patrón que este change materializa: un `<Modulo>Router.tsx` y un `<modulo>.routes.ts` por módulo, rutas base en `src/routes.ts`, y carga con `lazy` desde `App.tsx` (reglas 12, 15 y 16, provisionales antes de este change). Restricciones que condicionan el diseño:
 
 - Un módulo no importa de otro ni de `src/routes.ts` (regla 7), por lo que sus rutas son relativas.
 - `shared/` no sabe nada del negocio ni importa de `core/`, `proxy/`, `domain/` ni `store/` (regla 9).
@@ -58,7 +58,8 @@ Motivación y alcance: ver `proposal.md`. El comportamiento exigible está en `s
 
 - `src/routes.ts`: `appRoutes = { example: '/example' } as const`, absoluto; lo usan `App.tsx` (montaje, `navItems`, redirect).
 - `app/example/example.routes.ts`: `exampleRoutes = { detail: 'detail/:id' } as const`, relativo; el módulo no sabe dónde está montado.
-- Los links del módulo usan `generatePath(EXAMPLE_appRoutes.detail, { id })`, de modo que el patrón tiene una sola fuente. Al ser `as const`, TypeScript infiere los parámetros. Comprobado en Node con `react-router` 7.18.5: `generatePath('detail/:id', { id: 2 })` devuelve `detail/2` (relativo, acepta números) y lanza `Missing ":id" param` si falta el parámetro.
+- Los links del módulo usan `generatePath(exampleRoutes.detail, { id })`, de modo que el patrón tiene una sola fuente. Al ser `as const`, TypeScript infiere los parámetros. Comprobado en Node con `react-router` 7.18.5: `generatePath('detail/:id', { id: '2' })` devuelve `detail/2` (relativo) y lanza `Missing ":id" param` si falta el parámetro. En ejecución acepta números, pero sus tipos exigen `string`, así que los ids del módulo son texto.
+- El enlace de vuelta del detalle usa `..`, que se resuelve por jerarquía de rutas. Bajo una ruta `/example/*` resuelve a `/example` (lo cubre un test de navegación), así que no hace falta `relative="path"`.
 
 ### `Spinner`, `NotFoundPage` y helper de test, en `shared/`
 
@@ -78,15 +79,14 @@ Un índice y un detalle con parámetro ejercitan los paths relativos, `generateP
 
 - `shared/` (`RootLayout`, `Spinner`, `NotFoundPage`): un test por componente con `renderWithRouter` donde haga falta router (`NavLink`, `Link`).
 - `app/example/`: tests de las dos páginas y del router, con la regla 17 (`__tests__/` por componente; el del router en la raíz del módulo).
-- `App`: redirect de `/`, 404, `navItems` en el header, carga del módulo `lazy` (con `findBy`, porque es asíncrona) y spinner mientras carga. El test actual del `<h1>` desaparece porque el título pasa al header.
+- `App`: redirect de `/`, 404, `navItems` en el header y spinner bajo el header mientras el módulo carga (con `findBy`, porque la carga es asíncrona). El test actual del `<h1>` desaparece porque el título pasa al header.
+- El test del spinner va primero en su archivo: `lazy` guarda el módulo tras su primera carga, así que los tests posteriores ya no ven el fallback. Un comentario en el test lo explica. Si otro test cargara el módulo antes, el del spinner falla con un error claro y no pasa en falso. Se descartó aislarlo con un mock y un `lazy` propio por ser desproporcionado para lo que aporta.
 
 ## Risks / Trade-offs
 
-- [El link de vuelta `..` se resuelve por jerarquía de rutas, no por segmentos de URL, y con un módulo bajo `/example/*` puede sorprender] → Se cubre con un test de navegación del detalle al índice; si falla, se usa `relative="path"` o un link absoluto por props.
-- [`generatePath` con un patrón relativo dentro de `<Routes>` anidadas solo se ha probado como función, no como `Link` montado] → Un test navega del índice al detalle y comprueba la URL final.
-- [El fallback en transiciones de navegación: React Router v7 actualiza el estado con `startTransition`, y React puede mantener la pantalla anterior en vez de mostrar el fallback] → No cambia el diseño; solo se ve el spinner siempre en la primera carga. Solo se comprueba en un navegador y se informa como no verificado.
+- [El fallback en transiciones de navegación: React Router v7 actualiza el estado con `startTransition`, y React puede mantener la pantalla anterior en vez de mostrar el fallback] → No cambia el diseño. Comprobado en el navegador: entre módulos no se ve el spinner a cada navegación, como se esperaba. El historial atrás/adelante funciona sin reiniciar la SPA y el spinner se ve centrado en horizontal.
 - [`example` es código sin función de negocio que alguien podría tomar por permanente] → Se anota como temporal en `architecture.md` y en las tasks del primer módulo real.
-- [Sin error boundary, un fallo al descargar un chunk rompe la app] → Fuera de alcance; queda en "Decisiones abiertas" como pendiente antes del primer deploy, junto al rewrite del servidor que `BrowserRouter` necesita en un hosting estático.
+- [Sin error boundary, un fallo al descargar un chunk rompe la app] → Fuera de alcance; queda en "Decisiones abiertas" como pendiente antes del primer deploy, junto al rewrite del servidor que `BrowserRouter` necesita en un hosting estático (suele requerir configuración extra del hosting; se revisa al desplegar).
 - [Una ruta fuera del layout (login) no estará bajo el `Suspense` del layout] → Necesitará el suyo; se resuelve en el change de autenticación.
 
 ## Open Questions

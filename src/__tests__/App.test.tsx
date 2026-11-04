@@ -4,7 +4,7 @@ import { renderWithRouter } from '@/shared/test-utils/render-with-router';
 import App from '../App';
 
 describe('App', () => {
-  // `lazy` caches the module after its first load, so this test has to run first.
+  // Must run first: lazy caches the module after its first load, so later tests never see the fallback.
   it('shows the spinner while the module loads and the module afterwards', async () => {
     renderWithRouter(<App />, { route: '/example' });
 
