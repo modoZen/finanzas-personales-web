@@ -17,10 +17,13 @@ src/
   store/      estado de UI global (abierto)
   __tests__/  tests de los archivos de la raíz de src/
   routes.ts   rutas base de cada módulo
-  App.tsx     router raíz
-  main.tsx
+  App.tsx     rutas raíz: layout, Suspense y módulos cargados con lazy
+  main.tsx    punto de entrada; monta el BrowserRouter
   setup-tests.ts   setup global de Vitest
 ```
+
+`app/example/` es un módulo temporal: existe para probar el patrón de rutas y se borra, junto con su
+entrada en `routes.ts`, al crear el primer módulo real.
 
 ## Catálogo de un módulo
 
@@ -61,8 +64,7 @@ app/<modulo>/
     recurso: el wrapper de `fetch` y el tipo de error viven en `shared/utils/`. _(provisional hasta
     `data-layer`)_
 11. `store/` solo importa de `shared/` y `domain/`. _(provisional: `store/` sigue abierto)_
-12. `App.tsx` solo toca de un módulo su router y su archivo de rutas. _(provisional hasta
-    `routing`)_
+12. `App.tsx` solo toca de un módulo su router y su archivo de rutas.
 13. Entre carpetas de primer nivel, imports con `@/`. Dentro de la misma carpeta de primer nivel (un
     módulo, `shared/`, `core/`, `proxy/`…), imports relativos.
 14. Dentro de un módulo las capas van en una sola dirección: `pages` → `components` → `hooks` →
@@ -72,10 +74,16 @@ app/<modulo>/
     `domain/`; `domain/` no importa nada del módulo. `mocks/` solo se importa desde tests.
     _(provisional hasta `data-layer`)_
 
-### Rutas _(provisionales hasta `routing`)_
+### Rutas
 
-15. Cada módulo se carga con `lazy` desde `App.tsx`, dentro de un `Suspense` con fallback.
-16. Las rutas base viven en `src/routes.ts`; las del módulo, en su `*.routes.ts`.
+15. Cada módulo se carga con `lazy` desde `App.tsx`. Un `Suspense` con fallback envuelve las
+    `Routes` y se pasa como `children` de `RootLayout`, así el header queda fuera del límite de
+    carga. El `BrowserRouter` vive en `main.tsx`, no en `App.tsx`, para que los tests puedan
+    inyectar un `MemoryRouter`. Dentro de un módulo, las páginas se cargan con `lazy` solo si lo
+    justifican, y entonces el módulo pone su propio `Suspense`.
+16. Las rutas base viven en `src/routes.ts` (`appRoutes`, absolutas); las del módulo, en su
+    `*.routes.ts` (`exampleRoutes`, relativas: el módulo no sabe dónde está montado). Los enlaces
+    del módulo se construyen con `generatePath` a partir de esas constantes.
 
 ### Archivos
 
@@ -116,3 +124,7 @@ mappers/__tests__/transaction.mapper.test.ts
 - Orden de imports (hoy sin herramienta que lo aplique).
 - Forma concreta del wrapper de `fetch` y del tipo de error, y dónde va el `QueryClient` (se decide
   en `data-layer`).
+- Error boundary para fallos al descargar un módulo o al renderizar. Hay que decidirlo antes del
+  primer deploy.
+- Configuración del servidor para el `BrowserRouter`: un hosting estático debe devolver `index.html`
+  para cualquier ruta. Hay que resolverlo antes del primer deploy.

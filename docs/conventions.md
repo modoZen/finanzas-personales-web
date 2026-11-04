@@ -10,3 +10,5 @@ Reglas de código y estilo que no son de carpetas ni archivos (esas viven en `ar
 3. **Idioma**: código, nombres de archivo y commits en inglés; textos de la interfaz en español.
 4. **Commits**: Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `build:`…).
 5. **Imports sin extensión**: `@/App`, no `@/App.tsx`. Los assets conservan la suya (`./index.css`).
+6. **Constantes**: camelCase, sin `UPPER_CASE`. Los objetos fijos se declaran `as const`
+   (`appRoutes`, `exampleRoutes`).
