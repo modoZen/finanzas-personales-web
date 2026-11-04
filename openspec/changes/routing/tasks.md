@@ -2,9 +2,9 @@
 
 ## 1. Dependencia, rutas base y helper de test
 
-- [ ] 1.1 Instalar `react-router` v7 con `npm install react-router@7` y verificar que aparece en `dependencies` de `package.json`, que `package-lock.json` se actualiza y que `npm run build` sigue pasando
-- [ ] 1.2 Crear `src/routes.ts` con `appRoutes = { example: '/example' } as const` y verificar que `npx tsc -b` pasa y que `npm run lint` no reporta nada en el archivo
-- [ ] 1.3 Crear `src/shared/test-utils/render-with-router.tsx`, un helper de render que envuelve en `MemoryRouter` con ruta inicial opcional, y verificar que `npm run lint` y `npx tsc -b` pasan y que no importa nada fuera de `shared/` (regla 9)
+- [x] 1.1 Instalar `react-router` v7 con `npm install react-router@7` y verificar que aparece en `dependencies` de `package.json`, que `package-lock.json` se actualiza y que `npm run build` sigue pasando
+- [x] 1.2 Crear `src/routes.ts` con `appRoutes = { example: '/example' } as const` y verificar que `npx tsc -b` pasa y que `npm run lint` no reporta nada en el archivo
+- [x] 1.3 Crear `src/shared/test-utils/render-with-router.tsx`, un helper de render que envuelve en `MemoryRouter` con ruta inicial opcional, y verificar que `npm run lint` y `npx tsc -b` pasan y que no importa nada fuera de `shared/` (regla 9)
 
 ## 2. Componentes de `shared/`
 
