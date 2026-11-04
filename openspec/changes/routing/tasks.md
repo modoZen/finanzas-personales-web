@@ -14,10 +14,10 @@
 
 ## 3. Módulo `example` (temporal)
 
-- [ ] 3.1 Crear `app/example/example.routes.ts` con `exampleRoutes = { detail: 'detail/:id' } as const` y verificar que `npx tsc -b` pasa
-- [ ] 3.2 Crear `app/example/pages/ExamplePage/ExamplePage.tsx` y su test: lista con enlaces al detalle construidos con `generatePath(exampleRoutes.detail, { id })`; verificar que el test comprueba que cada enlace apunta a `detail/<id>` y que `npx vitest run src/app/example/pages/ExamplePage` pasa
-- [ ] 3.3 Crear `app/example/pages/ExampleDetailPage/ExampleDetailPage.tsx` y su test: muestra el `id` de `useParams` y un enlace de vuelta al índice; verificar que el test renderiza la ruta `detail/:id`, comprueba el `id` mostrado, y que el enlace de vuelta lleva al índice (si `..` no resuelve a `/example` bajo una ruta `/example/*`, usar `relative="path"` y anotarlo), y que `npx vitest run src/app/example/pages/ExampleDetailPage` pasa
-- [ ] 3.4 Crear `app/example/ExampleRouter.tsx` (export por defecto; `<Routes>` con la ruta índice y `exampleRoutes.detail`) y su test en `app/example/__tests__/ExampleRouter.test.tsx`; verificar que el test monta el router bajo `/example/*` y navega del índice al detalle comprobando la URL final `/example/detail/<id>` y el contenido, y que `npx vitest run src/app/example` pasa
+- [x] 3.1 Crear `app/example/example.routes.ts` con `exampleRoutes = { detail: 'detail/:id' } as const` y verificar que `npx tsc -b` pasa
+- [x] 3.2 Crear `app/example/pages/ExamplePage/ExamplePage.tsx` y su test: lista con enlaces al detalle construidos con `generatePath(exampleRoutes.detail, { id })`; verificar que el test comprueba que cada enlace apunta a `detail/<id>` y que `npx vitest run src/app/example/pages/ExamplePage` pasa
+- [x] 3.3 Crear `app/example/pages/ExampleDetailPage/ExampleDetailPage.tsx` y su test: muestra el `id` de `useParams` y un enlace de vuelta al índice; verificar que el test renderiza la ruta `detail/:id`, comprueba el `id` mostrado, y que el enlace de vuelta lleva al índice (si `..` no resuelve a `/example` bajo una ruta `/example/*`, usar `relative="path"` y anotarlo), y que `npx vitest run src/app/example/pages/ExampleDetailPage` pasa
+- [x] 3.4 Crear `app/example/ExampleRouter.tsx` (export por defecto; `<Routes>` con la ruta índice y `exampleRoutes.detail`) y su test en `app/example/__tests__/ExampleRouter.test.tsx`; verificar que el test monta el router bajo `/example/*` y navega del índice al detalle comprobando la URL final `/example/detail/<id>` y el contenido, y que `npx vitest run src/app/example` pasa
 
 ## 4. Integración en `App`, `main` y documentación
 
