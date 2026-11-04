@@ -30,9 +30,9 @@
 
 ## 5. Verificación final
 
-- [ ] 5.1 Verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan con los umbrales del 80 %, y que `dist/assets` contiene un chunk aparte para `example` (por ejemplo `ls dist/assets | grep -i example` o inspeccionar el resultado de `vite build`)
-- [ ] 5.2 Comprobar que el change respeta `docs/architecture.md` y `docs/conventions.md`: ningún módulo importa de otro ni de `@/routes`, `shared/` no importa de `core/`, `proxy/`, `domain/` ni `store/`, imports con `@/` entre carpetas de primer nivel y relativos dentro de la misma, componentes `const X: FC<Props>`, sin `enum`, y tests en `__tests__/` con el nombre de lo que prueban; verificar con `grep -rn "from '@/" src/shared src/app` y una lectura de las carpetas
-- [ ] 5.3 Informar de lo que no se pudo verificar: el aspecto del spinner y del layout, el historial al navegar y el fallback en transiciones, que solo se ven en un navegador
+- [x] 5.1 Verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan con los umbrales del 80 %, y que `dist/assets` contiene un chunk aparte para `example` (por ejemplo `ls dist/assets | grep -i example` o inspeccionar el resultado de `vite build`)
+- [x] 5.2 Comprobar que el change respeta `docs/architecture.md` y `docs/conventions.md`: ningún módulo importa de otro ni de `@/routes`, `shared/` no importa de `core/`, `proxy/`, `domain/` ni `store/`, imports con `@/` entre carpetas de primer nivel y relativos dentro de la misma, componentes `const X: FC<Props>`, sin `enum`, y tests en `__tests__/` con el nombre de lo que prueban; verificar con `grep -rn "from '@/" src/shared src/app` y una lectura de las carpetas
+- [x] 5.3 Informar de lo que no se pudo verificar: el aspecto del spinner y del layout, el historial al navegar y el fallback en transiciones, que solo se ven en un navegador
 
 ## Workflow follow-up
 
