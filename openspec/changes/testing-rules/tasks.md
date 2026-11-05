@@ -8,7 +8,7 @@
 
 ## 2. Convención 7 en `docs/conventions.md`
 
-- [ ] 2.1 Añadir la convención 7 («Tests») a `docs/conventions.md` con el texto de la sección "Contenido acordado" de `design.md`, que cubre qué se sustituye, los niveles, dónde van los mocks, el nombre y el idioma del texto de los stubs y el pendiente del backend; verificar que `npx prettier --check docs/conventions.md` pasa, que la numeración sigue a la convención 6, que las referencias a la regla 14 de `docs/architecture.md` y a la convención 3 existen, y que lo que describe coincide con los tests reales (`App.test.tsx` sustituye `ExampleRouter`, `ExampleRouter.test.tsx` sustituye las páginas y las páginas se prueban solas)
+- [x] 2.1 Añadir la convención 7 («Tests») a `docs/conventions.md` con el texto de la sección "Contenido acordado" de `design.md`, que cubre qué se sustituye, los niveles, dónde van los mocks, el nombre y el idioma del texto de los stubs y el pendiente del backend; verificar que `npx prettier --check docs/conventions.md` pasa, que la numeración sigue a la convención 6, que las referencias a la regla 14 de `docs/architecture.md` y a la convención 3 existen, y que lo que describe coincide con los tests reales (`App.test.tsx` sustituye `ExampleRouter`, `ExampleRouter.test.tsx` sustituye las páginas y las páginas se prueban solas)
 
 ## 3. Verificación final
 
