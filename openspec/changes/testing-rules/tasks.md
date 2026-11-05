@@ -12,9 +12,9 @@
 
 ## 3. Verificación final
 
-- [ ] 3.1 Revisar los demás tests contra la regla: verificar con `grep -rn "vi.mock\|vi.importActual" src` que solo `App.test.tsx` y `ExampleRouter.test.tsx` sustituyen algo (y cada uno solo lo que enruta), que los tests de `shared/` y de las páginas de `example` no sustituyen nada ni importan de otro módulo; anotar el resultado y, si algún test más cruza una frontera, señalarlo antes de tocarlo
-- [ ] 3.2 Verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan con los umbrales del 80 %, que son 20 tests (los 21 actuales menos el de clics del router; si la reescritura añade o quita alguno más, anotarlo) y que `dist/assets` mantiene el chunk de `ExampleRouter`
-- [ ] 3.3 Informar de lo que no se pudo verificar: el comportamiento del stub con `lazy` solo se confirma ejecutando el test, ningún test ejercita ya el flujo de navegación entre páginas reales (queda para los e2e), y la regla de tests no se ha probado todavía con código de `data-layer`
+- [x] 3.1 Revisar los demás tests contra la regla: verificar con `grep -rn "vi.mock\|vi.importActual" src` que solo `App.test.tsx` y `ExampleRouter.test.tsx` sustituyen algo (y cada uno solo lo que enruta), que los tests de `shared/` y de las páginas de `example` no sustituyen nada ni importan de otro módulo; anotar el resultado y, si algún test más cruza una frontera, señalarlo antes de tocarlo
+- [x] 3.2 Verificar que `npm run lint`, `npm run format:check`, `npm run build` y `npm run test:coverage` pasan con los umbrales del 80 %, que son 20 tests (los 21 actuales menos el de clics del router; si la reescritura añade o quita alguno más, anotarlo) y que `dist/assets` mantiene el chunk de `ExampleRouter`
+- [x] 3.3 Informar de lo que no se pudo verificar: el comportamiento del stub con `lazy` solo se confirma ejecutando el test, ningún test ejercita ya el flujo de navegación entre páginas reales (queda para los e2e), y la regla de tests no se ha probado todavía con código de `data-layer`
 
 ## Workflow follow-up
 
