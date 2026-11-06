@@ -70,8 +70,11 @@ app/<modulo>/
     `proxy` → `mappers` → `domain`. Cada capa importa solo de las que están a su derecha; los hooks
     reciben modelos ya mapeados y el `proxy` aplica el mapper dentro de cada función. `domain/`,
     `utils/` y `validation/` se usan desde cualquier capa; `utils/` y `validation/` solo importan de
-    `domain/`; `domain/` no importa nada del módulo. `mocks/` solo se importa desde tests.
-    _(provisional hasta `data-layer`)_
+    `domain/`; `domain/` no importa nada del módulo. `mocks/` solo se importa desde tests. Las
+    consultas y mutaciones (`useQuery`, `useMutation` y similares) solo se declaran en archivos de
+    `hooks/`; las páginas y los componentes no las declaran directamente, pero sí usan lo que esos
+    hooks devuelven (`refetch`, `mutate`) y pueden leer el estado global de carga (`useIsFetching`,
+    `useIsMutating`).
 
 ### Rutas
 
