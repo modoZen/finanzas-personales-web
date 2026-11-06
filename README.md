@@ -16,6 +16,18 @@ npm install
 `npm install` también ejecuta el script `prepare`, que activa los hooks de Git con Husky. No hace
 falta ningún paso manual adicional.
 
+## Variables de entorno
+
+La app lee la dirección del servidor de datos de la variable `VITE_API_URL`. `.env.example` es la
+plantilla versionada, con la URL pública de JSONPlaceholder. Antes de arrancar, cópiala a `.env`:
+
+```bash
+cp .env.example .env
+```
+
+`.env` no se versiona (está en `.gitignore`), así que cada persona tiene el suyo. Sin él, las
+peticiones fallan con un error que indica que falta `VITE_API_URL`.
+
 ## Scripts
 
 | Script                  | Qué hace                                                                 |

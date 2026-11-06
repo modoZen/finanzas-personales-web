@@ -13,8 +13,8 @@ La app no puede pedir datos a ningún sitio. `docs/architecture.md` deja abierta
   - `http-method.ts` y `http-status.ts`: objetos `as const` (`httpMethod`, `httpStatus`) con sus tipos, sin `enum`.
 - Crear el `QueryClient` en `src/main.tsx`, una sola vez, y envolver la app con `QueryClientProvider` junto al `BrowserRouter`, montando dentro las devtools de Query (cerradas por defecto). No hay fábrica compartida.
 - Versionar un `.env.example` con `VITE_API_URL` apuntando a JSONPlaceholder, añadir `.env` al `.gitignore` y documentar en el `README.md` que hay que copiar el ejemplo a `.env` antes de arrancar.
-- Ampliar el `afterEach` global de `src/setup-tests.ts` para restaurar espías, globales y variables de entorno sustituidas en los tests.
-- Crear en `src/shared/test-utils/` dos helpers componibles, junto al `renderWithRouter` existente: `render-with-query.tsx` (`renderHookWithQuery`, con un `QueryClient` propio por render y la configuración de los tests) y `render-with-providers.tsx` (`renderWithProviders`, router y Query a la vez, para las páginas). Cada test monta solo lo que usa.
+- Activar en `vitest.config.ts` el aislamiento entre tests (`clearMocks`, `restoreMocks`, `unstubGlobals` y `unstubEnvs`), para que las llamadas de los mocks, los espías, las globales y las variables de entorno sustituidas no pasen de un test al siguiente.
+- Crear en `src/shared/test-utils/` dos helpers componibles, junto al `renderWithRouter` existente: `render-with-query.tsx` (`renderHookWithQuery`, con un `QueryClient` propio por render y la configuración de los tests) y `render-with-router-and-query.tsx` (`renderWithRouterAndQuery`, router y Query a la vez, para las páginas). Cada test monta solo lo que usa.
 - Crear `src/shared/components/ErrorMessage/`: solo un mensaje (`role="alert"`), sin botones.
 - Convertir `src/app/example/` de estático a un módulo con datos, con las capas de la regla 14:
   - `domain/post.ts` con `Post`, `PostResponse` y `CreatePostRequest`.
@@ -43,8 +43,8 @@ La app no puede pedir datos a ningún sitio. `docs/architecture.md` deja abierta
 
 ## Impact
 
-- **Archivos nuevos**: `.env.example`, `src/shared/utils/http/` (4 archivos y sus tests), `src/shared/components/ErrorMessage/`, `src/shared/test-utils/render-with-query.tsx` y `render-with-providers.tsx`, y en `src/app/example/`: `domain/`, `mappers/`, `proxy/`, `hooks/` (3 hooks con sus tests) y `mocks/`.
-- **Archivos modificados**: `src/main.tsx`, `src/setup-tests.ts`, `ExamplePage` y `ExampleDetailPage` con sus tests, `README.md`, `.gitignore`, `docs/architecture.md`, `docs/conventions.md`, `package.json` y `package-lock.json`.
+- **Archivos nuevos**: `.env.example`, `src/shared/utils/http/` (4 archivos y sus tests), `src/shared/components/ErrorMessage/`, `src/shared/test-utils/render-with-query.tsx` y `render-with-router-and-query.tsx`, y en `src/app/example/`: `domain/`, `mappers/`, `proxy/`, `hooks/` (3 hooks con sus tests) y `mocks/`.
+- **Archivos modificados**: `src/main.tsx`, `vitest.config.ts`, `ExamplePage` y `ExampleDetailPage` con sus tests, `README.md`, `.gitignore`, `docs/architecture.md`, `docs/conventions.md`, `package.json` y `package-lock.json`.
 - **Dependencias**: `@tanstack/react-query` y, de desarrollo, `@tanstack/react-query-devtools`.
 - **Red**: la app en ejecución (`npm run dev`) pide datos a JSONPlaceholder. Los tests automáticos no usan la red: se sustituye en las fronteras (el proxy en los tests de páginas y hooks, `fetchJson` en el del proxy y `fetch` en el del wrapper).
 - **Estructura**: nacen `shared/utils/` (con la subcarpeta `http/`) y, dentro del módulo, `domain/`, `mappers/`, `proxy/`, `hooks/` y `mocks/`.

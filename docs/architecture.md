@@ -61,8 +61,7 @@ app/<modulo>/
 9. `shared/` no importa de `core/`, `proxy/`, `domain/` ni `store/`.
 10. `domain/` no importa de otras carpetas globales; `proxy/` solo importa de `shared/` y `domain/`;
     `core/` solo importa de `shared/`, `proxy/` y `domain/`. `proxy/` contiene solo peticiones por
-    recurso: el wrapper de `fetch` y el tipo de error viven en `shared/utils/`. _(provisional hasta
-    `data-layer`)_
+    recurso: el wrapper de `fetch` y el tipo de error viven en `shared/utils/http/`.
 11. `store/` solo importa de `shared/` y `domain/`. _(provisional: `store/` sigue abierto)_
 12. `App.tsx` solo toca de un módulo su router y su archivo de rutas.
 13. Entre carpetas de primer nivel, imports con `@/`. Dentro de la misma carpeta de primer nivel (un
@@ -91,7 +90,8 @@ app/<modulo>/
     mismo nombre que su archivo, y dentro su `__tests__/`. En el resto de carpetas (`proxy/`,
     `mappers/`, `validation/`, `utils/`…) hay un solo `__tests__/` al nivel de la carpeta. Los tests
     de los archivos sueltos en la raíz de `src/` o de un módulo (`App.tsx`, `routes.ts`, el router
-    del módulo…) viven en un `__tests__/` en esa misma raíz. Los archivos de test se llaman
+    del módulo…) viven en un `__tests__/` en esa misma raíz. Cada subcarpeta de `utils/` (por
+    ejemplo `utils/http/`) lleva su propio `__tests__/`. Los archivos de test se llaman
     `<Nombre>.test.ts(x)`, con el nombre de lo que prueban.
 
 ```
@@ -106,8 +106,8 @@ mappers/__tests__/transaction.mapper.test.ts
     (`Button.tsx`, `HomePage.tsx`, `RootLayout.tsx`, `TransactionsRouter.tsx`); `camelCase.ts` para
     hooks (`useTransactions.ts`); `kebab-case` para todo lo demás, con sufijo de rol separado por
     punto: `.routes.ts`, `.proxy.ts`, `.mapper.ts`, `.schema.ts`, `.mock.ts`. Los archivos de
-    `domain/` y `utils/` van sin sufijo. Las carpetas que no son de un componente ni de un hook van
-    en `kebab-case`, salvo `__tests__/`.
+    `domain/` y `utils/` (incluidas sus subcarpetas) van sin sufijo. Las carpetas que no son de un
+    componente ni de un hook van en `kebab-case`, salvo `__tests__/`.
 19. El setup global de Vitest es `src/setup-tests.ts`. Los helpers de test reutilizables viven en
     `test-utils/`: en `shared/test-utils/` los que no necesitan nada de la app (respetan la regla 9)
     y en `core/test-utils/` los que necesitan providers de la app.
@@ -115,6 +115,13 @@ mappers/__tests__/transaction.mapper.test.ts
 ### Mantenimiento
 
 20. Todo change que toma una decisión de estructura actualiza este documento como una tarea más.
+
+### Contenido de las carpetas
+
+21. `utils/` contiene TypeScript puro (sin JSX, hooks ni APIs de React), agrupado por tema en
+    subcarpetas cuando hace falta (`utils/http/`); `components/` y `hooks/` contienen código de
+    React. Los tipos y constantes transversales viven junto a la utilidad que los usa, no en una
+    carpeta de tipos aparte. `domain/` queda reservado para entidades de negocio.
 
 ## Decisiones abiertas
 

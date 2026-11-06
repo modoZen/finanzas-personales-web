@@ -72,7 +72,7 @@ fetchJson         fetch global y la variable      vi.stubGlobal / vi.stubEnv
 mapper            nada (función pura)
 ```
 
-Los tests de hooks necesitan el provider de Query (`renderHookWithQuery`) y los de páginas, el router y Query (`renderWithProviders`). Los estados de una página se fuerzan con el proxy: cargando con una promesa que no se resuelve, error con un rechazo (por ejemplo un `HttpError` 404) y datos con los de `mocks/`. El test del proxy usa el mapper real y `vi.mock` solo de `fetchJson`, con los datos de `mocks/post.mock.ts`. Los espías y los stubs se restauran en un `afterEach` global de `src/setup-tests.ts` (`vi.restoreAllMocks`, `vi.unstubAllGlobals`, `vi.unstubAllEnvs`).
+Los tests de hooks necesitan el provider de Query (`renderHookWithQuery`) y los de páginas, el router y Query (`renderWithRouterAndQuery`). Los estados de una página se fuerzan con el proxy: cargando con una promesa que no se resuelve, error con un rechazo (por ejemplo un `HttpError` 404) y datos con los de `mocks/`. El test del proxy usa el mapper real y `vi.mock` solo de `fetchJson`, con los datos de `mocks/post.mock.ts`. Los espías y los stubs se aíslan entre tests con las opciones globales de `vitest.config.ts` (`clearMocks`, `restoreMocks`, `unstubGlobals` y `unstubEnvs`); `cleanup()` de Testing Library se queda en `src/setup-tests.ts`. No se usa `mockReset`: borraría las implementaciones de los `vi.fn(impl)` declarados a nivel de módulo.
 *Alternativa:* que cada capa sustituya la siguiente (la página sustituye al hook, el hook al proxy). Descartada: obligaba a fabricar resultados de hook en cada test de página y no comprobaba que página, hook y caché funcionan juntos. A cambio, los tests de página son asíncronos (hay que esperar con `findBy`) y se rompen también si falla el hook; el test del propio hook localiza la causa.
 
 **9. `postProxy` es un objeto `as const` y los hooks lo llaman por el objeto.**
@@ -99,7 +99,7 @@ Devuelven el resultado completo de la librería con un tipo explícito, que exig
 No necesitan nada de la app. Cada test pide solo los providers que usa, y hoy solo las páginas necesitan el router y Query a la vez:
 - `render-with-router.tsx` (ya existe): `renderWithRouter`, para los tests que solo necesitan el router (`NotFoundPage`, `RootLayout`, el router de módulo, `App`).
 - `render-with-query.tsx` (nuevo): `renderHookWithQuery`, para los tests de hooks. Crea un `QueryClient` nuevo por llamada, con `retry: false` y sin reintentos que alarguen el test, y lo devuelve por si un test necesita inspeccionar la caché. Aquí vive también la creación del cliente de test, para que no se duplique.
-- `render-with-providers.tsx` (nuevo): `renderWithProviders`, router y Query a la vez, para los tests de páginas; reutiliza el cliente de test de `render-with-query.tsx`.
+- `render-with-router-and-query.tsx` (nuevo): `renderWithRouterAndQuery`, router y Query a la vez, para los tests de páginas; reutiliza el cliente de test de `render-with-query.tsx`.
 `renderWithQuery` para componentes que solo necesiten Query no se crea todavía: su primer usuario será el test del indicador global, en `loading-indicator`. Tampoco se acepta aún un `QueryClient` de fuera como opción; se añadirá cuando un test necesite precargar la caché. `core/test-utils/` nacería con un provider propio de `core/` (por ejemplo el usuario actual), que envolvería a estos.
 *Alternativa:* un solo `renderWithProviders` con opciones (`router`, `query`). Descartada: el nombre oculta lo que monta y cada llamada tendría que acordarse de las banderas.
 
@@ -132,11 +132,11 @@ La regla nueva es la 21, al final y sin renumerar, para no romper las referencia
 - [JSONPlaceholder puede caerse, cambiar o limitar peticiones] → Solo afecta a `npm run dev`; los tests no usan la red. Cambiar de API es cambiar `VITE_API_URL`.
 - [El POST no se guarda y parece un fallo] → La página lo dice explícitamente tras crear.
 - [`Response` y `fetch` en el entorno jsdom de Vitest podrían no comportarse como en el navegador] → Los tests del wrapper construyen respuestas con `Response` y sustituyen `fetch`; se comprueba al implementar y, si hace falta, se ajusta el entorno de ese archivo.
-- [Un `afterEach` global que restaura espías y stubs podría tapar un test que dependa de uno anterior] → Es el comportamiento deseado (aislar); se añade a `setup-tests.ts` y se comprueba que los 20 tests actuales siguen pasando.
+- [Un aislamiento global entre tests podría tapar un test que dependa de uno anterior] → Es el comportamiento deseado (aislar); se activa en `vitest.config.ts` y se comprueba que los tests actuales siguen pasando y que un test de prueba confirma que nada se arrastra entre tests.
 - [Una errata en una clave de caché en línea no da error] → Un test del hook comprueba el refetch tras crear; el resto de claves tienen un solo consumidor.
 - [Las páginas reciben el resultado completo de Query y podrían acabar dependiendo de detalles de la librería] → Se acepta: necesitan `refetch` y `mutate`; la regla de la 14 evita que declaren consultas por su cuenta, y se vigila en la revisión de los PR.
 - [El `message` de `HttpError` incluye la URL completa; si algún día lleva datos sensibles en la query, aparecería en los registros] → Hoy no hay ninguno; se revisa cuando llegue la autenticación.
-- [Los tests de página dependen de Query y son asíncronos: el estado de carga necesita una promesa que no se resuelve y los demás, esperar con `findBy`] → Los helpers crean un cliente con `retry: false` por render, y los espías se restauran en el `afterEach` global.
+- [Los tests de página dependen de Query y son asíncronos: el estado de carga necesita una promesa que no se resuelve y los demás, esperar con `findBy`] → Los helpers crean un cliente con `retry: false` por render, y la configuración de Vitest restaura los espías entre tests.
 - [Un fallo en un hook rompe también los tests de las páginas que lo usan] → Es el coste de no aislar cada capa; el test del propio hook, que sustituye solo el proxy, localiza la causa.
 - [Las devtools acaban en el bundle de producción] → El componente es un vacío fuera de `development` y se comprueba en el build buscando la cadena `tsqd-` en `dist/assets` (tarea 2.1 y 6.1); si apareciera, se importan de forma dinámica detrás de `import.meta.env.DEV`.
 - [Las devtools exigen que `@tanstack/react-query` esté en una versión compatible (`^5.106.1`)] → Se instalan juntas y se comprueba que ambas quedan en la misma 5.x.
@@ -147,8 +147,8 @@ La regla nueva es la 21, al final y sin renumerar, para no romper las referencia
 
 ## Migration Plan
 
-1. Dependencia, `.env.example` y `shared/utils/http/` con sus tests, y las reglas de `architecture.md` que cubre.
-2. `main.tsx`, los helpers `render-with-query` y `render-with-providers`, el `afterEach` global y `ErrorMessage`.
+1. Dependencia, `.env.example`, aislamiento de tests en `vitest.config.ts` y `shared/utils/http/` con sus tests, y las reglas de `architecture.md` que cubre.
+2. `main.tsx`, los helpers `render-with-query` y `render-with-router-and-query` y `ErrorMessage`.
 3. Capa de datos de `example`: dominio, mocks, mapper y proxy con sus tests.
 4. Hooks con sus tests, la regla 14 y la convención 7.
 5. Páginas con sus tests, y el árbol y la nota de `example` en `architecture.md`.

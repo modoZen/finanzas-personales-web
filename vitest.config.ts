@@ -8,6 +8,10 @@ export default mergeConfig(
       environment: 'jsdom',
       globals: false,
       setupFiles: ['./src/setup-tests.ts'],
+      clearMocks: true,
+      restoreMocks: true,
+      unstubGlobals: true,
+      unstubEnvs: true,
       coverage: {
         provider: 'v8',
         reporter: ['text', 'html'],
