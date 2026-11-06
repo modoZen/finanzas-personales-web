@@ -18,7 +18,7 @@ src/
   __tests__/  tests de los archivos de la raíz de src/
   routes.ts   rutas base de cada módulo
   App.tsx     rutas raíz: layout, Suspense y módulos cargados con lazy
-  main.tsx    punto de entrada; monta el BrowserRouter
+  main.tsx    punto de entrada; monta los providers: QueryClientProvider y BrowserRouter
   setup-tests.ts   setup global de Vitest
 ```
 
@@ -129,8 +129,6 @@ mappers/__tests__/transaction.mapper.test.ts
 - Relación entre `core/` y `store/`: hoy ninguno importa del otro.
 - Dónde viven las validaciones compartidas entre módulos.
 - Orden de imports (hoy sin herramienta que lo aplique).
-- Forma concreta del wrapper de `fetch` y del tipo de error, y dónde va el `QueryClient` (se decide
-  en `data-layer`).
 - Error boundary para fallos al descargar un módulo o al renderizar. Hay que decidirlo antes del
   primer deploy.
 - Configuración del servidor para el `BrowserRouter`: un hosting estático debe devolver `index.html`
