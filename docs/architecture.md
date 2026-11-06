@@ -22,8 +22,8 @@ src/
   setup-tests.ts   setup global de Vitest
 ```
 
-`app/example/` es un módulo temporal: existe para probar el patrón de rutas y se borra, junto con su
-entrada en `routes.ts`, al crear el primer módulo real.
+`app/example/` es un módulo temporal: prueba el patrón de rutas y de datos (consume JSONPlaceholder)
+y se borra, junto con su entrada en `routes.ts`, al crear el primer módulo real.
 
 ## Catálogo de un módulo
 
