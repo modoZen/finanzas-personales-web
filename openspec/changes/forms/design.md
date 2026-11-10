@@ -47,7 +47,7 @@ Props: `onSubmit: (post: Omit<Post, 'id'>) => void`, `onCancel: () => void` e `i
 - Que `PostForm` use `useCreatePost` por dentro: legítimo (la regla 14 deja a los componentes usar hooks), pero obliga a probar el formulario con el proxy y Query y reparte el estado de la creación entre dos sitios.
 
 **5. Accesibilidad básica sin componente de campo.**
-Cada campo lleva su `label` asociado, `aria-invalid` y `aria-describedby` apuntando a su mensaje de error. Los mensajes de campo no llevan `role="alert"`: el único `alert` de la página sigue siendo el `ErrorMessage` de la creación fallida, así que los tests y los lectores de pantalla no los confunden. El `form` lleva `noValidate` para que el navegador no se adelante al esquema. Los tres campos se pintan a partir de una constante de configuración dentro de `PostForm.tsx`, sin duplicar el marcado ni crear un componente de campo; un componente reutilizable en `shared/components/` nace con el segundo formulario y el diseño.
+Cada campo lleva su `label` asociado, `aria-invalid` y `aria-describedby` apuntando a su mensaje de error. Los mensajes de campo no llevan `role="alert"`: el único `alert` de la página sigue siendo el `ErrorMessage` de la creación fallida, así que los tests y los lectores de pantalla no los confunden. El `form` lleva `noValidate` para que el navegador no se adelante al esquema. Cada campo se escribe de forma explícita, con su `label`, su control con `register` y su mensaje, sin constante de configuración ni componente de campo: el marcado se repite tres veces y se acepta hasta que haya diseño y componentes atómicos. Como `useForm` infiere los tipos del esquema, los nombres de `register` se autocompletan a partir de él y uno inexistente falla en `tsc`.
 
 **6. Se prueba en tres niveles, sustituyendo solo en las fronteras (convención 7).**
 - *Esquema y mapper*: tests unitarios de funciones puras; el del esquema recorre cada regla de la spec con valores válidos e inválidos.
@@ -85,7 +85,7 @@ Un modal posterior envuelve a `PostForm` y la página sigue controlando `isShow`
 - [Un olvido del `createPost.reset()` al abrir o al cancelar dejaría a la vista un error o un éxito anteriores] → Los tests de la página cubren reabrir tras un fallo y tras un éxito.
 - [Un autor con muchísimos dígitos pasa el esquema y `Number` pierde precisión] → Hoy no hay ningún autor real; se acota cuando el campo sea de verdad un identificador.
 - [Los mensajes en español dentro del esquema acoplan la validación al idioma de la interfaz] → Es lo que mandan las convenciones (los textos de la interfaz van en español); si algún día hay varios idiomas, los mensajes salen del esquema.
-- [Los tres campos comparten marcado y se pintan desde una constante, que podría quedarse corta con otro tipo de campo] → Se amplía con el segundo formulario; el componente de campo reutilizable se decide entonces, con el diseño.
+- [El marcado de cada campo (etiqueta, control y mensaje) se repite tres veces en `PostForm`] → Se acepta: es un formulario de ejemplo; el componente de campo reutilizable se decide con el diseño y los componentes atómicos.
 - [Las dependencias engordan el chunk de `example`] → Viajan en el chunk de `ExampleRouter` (carga diferida); se anota el tamaño antes y después en la verificación.
 - [El test de la página escribe en campos y es más lento que el del botón] → Son tres campos y un envío; se acepta.
 

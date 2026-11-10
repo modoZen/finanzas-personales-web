@@ -30,3 +30,9 @@ Reglas de código y estilo que no son de carpetas ni archivos (esas viven en `ar
      componente en inglés (`Example page`).
    - **Sin red**: ningún test llama a la red ni usa MSW. El flujo contra una API real queda para los
      tests e2e del primer módulo real.
+8. **Formularios**: el formulario (`useForm` con el resolver del esquema, regla 22 de
+   `architecture.md`) vive en un componente que recibe `onSubmit`, `onCancel` e `isPending` y no
+   conoce los hooks de datos: emite los datos válidos y la página decide qué pasa después. La página
+   pasa la función `mutate` de su mutación y, en su `onSuccess`, desmonta el formulario, de modo que
+   el siguiente se abre nuevo y no hace falta `reset()`. Si el envío falla, el formulario sigue
+   abierto con lo escrito y el error lo muestra la página a partir del estado de la mutación.
