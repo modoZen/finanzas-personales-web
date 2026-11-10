@@ -31,7 +31,7 @@ React Hook Form valida y mantiene el estado del formulario sin re-renderizar en 
 Los valores de un formulario son lo que escribe el usuario, es decir, texto. `validation/post-form.schema.ts` define `postFormSchema` con `title`, `body` y `authorId`, los tres `string`, y exporta `PostFormValues = z.infer<typeof postFormSchema>`. Las reglas siguen la spec:
 - `title`: recortado de espacios y de al menos 3 caracteres.
 - `body`: recortado y de al menos 10.
-- `authorId`: un entero positivo escrito con dígitos, sin ceros a la izquierda (`/^[1-9]\d*$/`).
+- `authorId`: recortado y un entero positivo escrito con dígitos, sin ceros a la izquierda (`/^[1-9]\d*$/`).
 
 Los mensajes, en español y con el mínimo o el formato exigido: «El título debe tener al menos 3 caracteres.», «El texto debe tener al menos 10 caracteres.» y «El autor debe ser un número entero positivo.» La conversión al modelo vive en `mappers/post.mapper.ts` como `toNewPost(values): Omit<Post, 'id'>`, que hace `Number(values.authorId)`. El `authorId` se escribe como texto a propósito: el patrón enseña una conversión real entre lo que se escribe y el modelo, y sigue valiendo cuando un campo sea un importe o una fecha.
 *Alternativa:* `z.coerce.number()` o `valueAsNumber` para que el esquema ya devuelva un número. Descartada: mezcla en el esquema la conversión con la validación, y con Zod 4 el tipo de entrada de `coerce` es `unknown`, lo que complica el tipado del formulario. Con todos los campos de texto, la entrada y la salida del esquema son el mismo tipo.

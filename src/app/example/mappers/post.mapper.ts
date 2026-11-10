@@ -1,4 +1,5 @@
 import type { CreatePostRequest, Post, PostResponse } from '../domain/post';
+import type { PostFormValues } from '../validation/post-form.schema';
 
 export const toPost = ({ id, title, body, userId }: PostResponse): Post => ({
   id,
@@ -15,4 +16,10 @@ export const toCreatePostRequest = ({
   title,
   body,
   userId: authorId,
+});
+
+export const toNewPost = ({ title, body, authorId }: PostFormValues): Omit<Post, 'id'> => ({
+  title,
+  body,
+  authorId: Number(authorId),
 });

@@ -70,11 +70,12 @@ app/<modulo>/
     `proxy` → `mappers` → `domain`. Cada capa importa solo de las que están a su derecha; los hooks
     reciben modelos ya mapeados y el `proxy` aplica el mapper dentro de cada función. `domain/`,
     `utils/` y `validation/` se usan desde cualquier capa; `utils/` y `validation/` solo importan de
-    `domain/`; `domain/` no importa nada del módulo. `mocks/` solo se importa desde tests. Las
-    consultas y mutaciones (`useQuery`, `useMutation` y similares) solo se declaran en archivos de
-    `hooks/`; las páginas y los componentes no las declaran directamente, pero sí usan lo que esos
-    hooks devuelven (`refetch`, `mutate`) y pueden leer el estado global de carga (`useIsFetching`,
-    `useIsMutating`).
+    `domain/` (entre las capas del módulo; los esquemas pueden usar `shared/` y `core/` como
+    cualquier otra capa); `domain/` no importa nada del módulo. `mocks/` solo se importa desde
+    tests. Las consultas y mutaciones (`useQuery`, `useMutation` y similares) solo se declaran en
+    archivos de `hooks/`; las páginas y los componentes no las declaran directamente, pero sí usan
+    lo que esos hooks devuelven (`refetch`, `mutate`) y pueden leer el estado global de carga
+    (`useIsFetching`, `useIsMutating`).
 
 ### Rutas
 
@@ -125,12 +126,18 @@ mappers/__tests__/transaction.mapper.test.ts
     subcarpetas cuando hace falta (`utils/http/`); `components/` y `hooks/` contienen código de
     React. Los tipos y constantes transversales viven junto a la utilidad que los usa, no en una
     carpeta de tipos aparte. `domain/` queda reservado para entidades de negocio.
+22. Las validaciones (`validation/`, archivos `*.schema.ts`) son por módulo. Si dos módulos
+    necesitan la misma, sube según la regla 6: a `shared/validation/` si no conoce el negocio
+    (reglas genéricas como obligatorio, email o longitud mínima, con sus mensajes), o a
+    `core/validation/` si lo conoce (reglas que usan tipos de `domain/`, que `shared/` no puede
+    importar por la regla 9). Un esquema de formulario valida los valores del formulario, no el
+    modelo: la conversión de esos valores al modelo se hace en un mapper. Esas carpetas nacen cuando
+    un segundo módulo las necesita (regla 3).
 
 ## Decisiones abiertas
 
 - `store/`: Zustand, Context o nada. Hasta decidir, el estado de UI global vive en `shared/hooks`.
 - Relación entre `core/` y `store/`: hoy ninguno importa del otro.
-- Dónde viven las validaciones compartidas entre módulos.
 - Orden de imports (hoy sin herramienta que lo aplique).
 - Error boundary para fallos al descargar un módulo o al renderizar. Hay que decidirlo antes del
   primer deploy.

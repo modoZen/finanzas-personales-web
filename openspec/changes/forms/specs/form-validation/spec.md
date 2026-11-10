@@ -22,14 +22,14 @@ Un formulario SHALL comprobar los valores de sus campos al intentar enviarlo, SH
 - **THEN** se envían los valores escritos y no se muestra ningún mensaje de error
 
 ### Requirement: El formulario de crear un post exige título, texto y autor válidos
-El formulario de crear un post SHALL exigir un título de al menos 3 caracteres, un texto de al menos 10 y un autor que sea un número entero positivo, sin contar los espacios al principio ni al final de los textos.
+El formulario de crear un post SHALL exigir un título de al menos 3 caracteres, un texto de al menos 10 y un autor que sea un número entero positivo, sin contar los espacios al principio ni al final de ningún campo.
 
 #### Scenario: Título o texto vacíos o demasiado cortos
 - **WHEN** el usuario envía el formulario con el título o el texto vacíos, solo con espacios o más cortos que el mínimo
 - **THEN** el campo afectado muestra un mensaje que indica el mínimo exigido
 
 #### Scenario: Autor que no es un número entero positivo
-- **WHEN** el usuario envía el formulario con un autor vacío, con letras, con decimales, cero o negativo
+- **WHEN** el usuario envía el formulario con un autor vacío, solo con espacios, con letras, con decimales, cero o negativo
 - **THEN** el campo del autor muestra un mensaje que indica que debe ser un número entero positivo
 
 ### Requirement: Un formulario no se envía ni se cancela mientras espera
