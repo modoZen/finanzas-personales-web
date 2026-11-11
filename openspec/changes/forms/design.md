@@ -100,5 +100,6 @@ Un modal posterior envuelve a `PostForm` y la página sigue controlando `isShow`
 
 - Qué componente de campo (etiqueta, entrada, error) llevará `shared/components/` cuando haya un segundo formulario: se decide con el diseño.
 - Si validar las respuestas del servidor con esquemas: se decide con el primer módulo real.
+- Si `PostForm` debe emitir los valores del formulario y que la página haga el mapeo al modelo (más simétrico para formularios de edición, porque el formulario deja de conocer el dominio): se evalúa con el primer formulario real.
 - Cómo se presenta el formulario como modal (componente `Modal` en `shared/`, foco, `Escape`): se decide con el diseño; `PostForm` y el `isShow` de la página no cambian.
 - Pendiente para `error-handling`: la creación de un post muestra su error en la propia página (`ErrorMessage`), así que esa mutación no debe abrir el modal global. Hay que excluirla, por ejemplo con `meta` en `useCreatePost`; el mecanismo (marcar lo que se excluye o lo que se incluye) se decide en ese change.

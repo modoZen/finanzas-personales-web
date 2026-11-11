@@ -1,20 +1,31 @@
-import type { FC } from 'react';
+import { useState, type FC } from 'react';
 import { generatePath, Link } from 'react-router';
 import ErrorMessage from '@/shared/components/ErrorMessage/ErrorMessage';
 import Spinner from '@/shared/components/Spinner/Spinner';
+import PostForm from '../../components/PostForm/PostForm';
+import type { Post } from '../../domain/post';
 import { exampleRoutes } from '../../example.routes';
 import { useCreatePost } from '../../hooks/useCreatePost/useCreatePost';
 import { usePosts } from '../../hooks/usePosts/usePosts';
 
-const newPost = {
-  title: 'Post de ejemplo',
-  body: 'Creado desde la página de ejemplo.',
-  authorId: 1,
-};
-
 const ExamplePage: FC = () => {
   const { data: posts, isPending, isError } = usePosts();
   const createPost = useCreatePost();
+  const [isShow, setIsShow] = useState(false);
+
+  const openForm = (): void => {
+    createPost.reset();
+    setIsShow(true);
+  };
+
+  const closeForm = (): void => {
+    createPost.reset();
+    setIsShow(false);
+  };
+
+  const submitPost = (post: Omit<Post, 'id'>): void => {
+    createPost.mutate(post, { onSuccess: () => setIsShow(false) });
+  };
 
   return (
     <section className='flex flex-col gap-4'>
@@ -36,14 +47,17 @@ const ExamplePage: FC = () => {
         </ul>
       )}
       <div className='flex flex-col items-start gap-2'>
-        <button
-          type='button'
-          disabled={createPost.isPending}
-          onClick={() => createPost.mutate(newPost)}
-          className='rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-700 disabled:opacity-50'
-        >
-          Crear post
-        </button>
+        {isShow ? (
+          <PostForm onSubmit={submitPost} onCancel={closeForm} isPending={createPost.isPending} />
+        ) : (
+          <button
+            type='button'
+            onClick={openForm}
+            className='rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-700'
+          >
+            Nuevo post
+          </button>
+        )}
         {createPost.isSuccess && (
           <p>
             Post creado con id {createPost.data.id}. La API de ejemplo no lo guarda, así que no

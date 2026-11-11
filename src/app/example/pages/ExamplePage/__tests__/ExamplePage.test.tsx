@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
@@ -15,66 +15,176 @@ const renderPage = () =>
     { route: '/example' },
   );
 
+const newPostButton = () => screen.getByRole('button', { name: 'Nuevo post' });
+const submitButton = () => screen.getByRole('button', { name: 'Crear post' });
+const isFormShown = (): boolean => screen.queryByLabelText('Título') !== null;
+
+const openForm = () => userEvent.click(newPostButton());
+
+const fillForm = async (): Promise<void> => {
+  await userEvent.type(screen.getByLabelText('Título'), 'Un título');
+  await userEvent.type(screen.getByLabelText('Texto'), 'Un texto largo');
+  await userEvent.type(screen.getByLabelText('Autor'), '3');
+};
+
+const renderWithPosts = async () => {
+  vi.spyOn(postProxy, 'getAll').mockResolvedValue(postListMock);
+  renderPage();
+  await screen.findByRole('link', { name: postMock.title });
+};
+
 describe('ExamplePage', () => {
-  it('shows the spinner, and no list or error, while loading', () => {
-    vi.spyOn(postProxy, 'getAll').mockReturnValue(new Promise(() => {}));
+  describe('list', () => {
+    it('shows the spinner, and no list or error, while loading', () => {
+      vi.spyOn(postProxy, 'getAll').mockReturnValue(new Promise(() => {}));
 
-    renderPage();
+      renderPage();
 
-    expect(screen.getByRole('status')).toHaveTextContent('Cargando…');
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(screen.queryByRole('list')).not.toBeInTheDocument();
-  });
+      expect(screen.getByRole('status')).toHaveTextContent('Cargando…');
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      expect(screen.queryByRole('list')).not.toBeInTheDocument();
+    });
 
-  it('shows an error, and no list or spinner, when loading fails', async () => {
-    vi.spyOn(postProxy, 'getAll').mockRejectedValue(new Error('boom'));
+    it('shows an error, and no list or spinner, when loading fails', async () => {
+      vi.spyOn(postProxy, 'getAll').mockRejectedValue(new Error('boom'));
 
-    renderPage();
+      renderPage();
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('No se pudieron cargar los posts.');
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-    expect(screen.queryByRole('list')).not.toBeInTheDocument();
-  });
-
-  it('lists the posts, each title linking to its detail under the mounted route', async () => {
-    vi.spyOn(postProxy, 'getAll').mockResolvedValue(postListMock);
-
-    renderPage();
-
-    expect(screen.getByRole('heading', { level: 1, name: 'Ejemplo' })).toBeInTheDocument();
-    for (const post of postListMock) {
-      expect(await screen.findByRole('link', { name: post.title })).toHaveAttribute(
-        'href',
-        `/example/detail/${post.id}`,
+      expect(await screen.findByRole('alert')).toHaveTextContent(
+        'No se pudieron cargar los posts.',
       );
-    }
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+      expect(screen.queryByRole('list')).not.toBeInTheDocument();
+    });
+
+    it('lists the posts, each title linking to its detail under the mounted route', async () => {
+      vi.spyOn(postProxy, 'getAll').mockResolvedValue(postListMock);
+
+      renderPage();
+
+      expect(screen.getByRole('heading', { level: 1, name: 'Ejemplo' })).toBeInTheDocument();
+      for (const post of postListMock) {
+        expect(await screen.findByRole('link', { name: post.title })).toHaveAttribute(
+          'href',
+          `/example/detail/${post.id}`,
+        );
+      }
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
   });
 
-  it('creates a post and says the example API does not store it', async () => {
-    vi.spyOn(postProxy, 'getAll').mockResolvedValue(postListMock);
-    const create = vi.spyOn(postProxy, 'create').mockResolvedValue({ ...postMock, id: 101 });
-    renderPage();
-    await screen.findByRole('link', { name: postMock.title });
+  describe('new post form', () => {
+    it('starts closed, with only the "Nuevo post" button', async () => {
+      await renderWithPosts();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Crear post' }));
+      expect(newPostButton()).toBeInTheDocument();
+      expect(isFormShown()).toBe(false);
+    });
 
-    expect(create).toHaveBeenCalledWith(expect.objectContaining({ authorId: 1 }));
-    expect(await screen.findByText(/Post creado con id 101/)).toHaveTextContent(
-      'La API de ejemplo no lo guarda',
-    );
-  });
+    it('opens the form and hides the "Nuevo post" button', async () => {
+      await renderWithPosts();
 
-  it('shows an error and keeps the list when the creation fails', async () => {
-    vi.spyOn(postProxy, 'getAll').mockResolvedValue(postListMock);
-    vi.spyOn(postProxy, 'create').mockRejectedValue(new Error('boom'));
-    renderPage();
-    await screen.findByRole('link', { name: postMock.title });
+      await openForm();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Crear post' }));
+      expect(isFormShown()).toBe(true);
+      expect(screen.queryByRole('button', { name: 'Nuevo post' })).not.toBeInTheDocument();
+    });
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('No se pudo crear el post.');
-    expect(screen.getByRole('link', { name: postMock.title })).toBeInTheDocument();
+    it('closes the form and shows "Nuevo post" again when cancelling, without creating', async () => {
+      await renderWithPosts();
+      const create = vi.spyOn(postProxy, 'create');
+      await openForm();
+      await fillForm();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+
+      expect(isFormShown()).toBe(false);
+      expect(newPostButton()).toBeInTheDocument();
+      expect(create).not.toHaveBeenCalled();
+    });
+
+    it('does not create a post while the form is invalid', async () => {
+      await renderWithPosts();
+      const create = vi.spyOn(postProxy, 'create');
+      await openForm();
+
+      await userEvent.click(submitButton());
+
+      expect(await screen.findByText('El título debe tener al menos 3 caracteres.')).toBeVisible();
+      expect(create).not.toHaveBeenCalled();
+      expect(isFormShown()).toBe(true);
+    });
+
+    describe('when the creation succeeds', () => {
+      const createSuccessfully = async () => {
+        await renderWithPosts();
+        const create = vi.spyOn(postProxy, 'create').mockResolvedValue({ ...postMock, id: 101 });
+        await openForm();
+        await fillForm();
+        await userEvent.click(submitButton());
+        return create;
+      };
+
+      it('creates the converted model, closes the form, shows "Nuevo post" and says it is not stored', async () => {
+        const create = await createSuccessfully();
+
+        expect(await screen.findByText(/Post creado con id 101/)).toHaveTextContent(
+          'La API de ejemplo no lo guarda',
+        );
+        expect(create).toHaveBeenCalledWith({
+          title: 'Un título',
+          body: 'Un texto largo',
+          authorId: 3,
+        });
+        expect(isFormShown()).toBe(false);
+        expect(newPostButton()).toBeInTheDocument();
+      });
+
+      it('reopens the form empty and without the previous notice', async () => {
+        await createSuccessfully();
+        await screen.findByText(/Post creado con id 101/);
+
+        await openForm();
+
+        expect(screen.getByLabelText('Título')).toHaveValue('');
+        expect(screen.getByLabelText('Texto')).toHaveValue('');
+        expect(screen.getByLabelText('Autor')).toHaveValue('');
+        expect(screen.queryByText(/Post creado con id/)).not.toBeInTheDocument();
+      });
+    });
+
+    describe('when the creation fails', () => {
+      const failToCreate = async () => {
+        await renderWithPosts();
+        vi.spyOn(postProxy, 'create').mockRejectedValue(new Error('boom'));
+        await openForm();
+        await fillForm();
+        await userEvent.click(submitButton());
+        await screen.findByRole('alert');
+      };
+
+      it('shows the error and keeps the form open with what was written', async () => {
+        await failToCreate();
+
+        expect(screen.getByRole('alert')).toHaveTextContent('No se pudo crear el post.');
+        expect(screen.getByLabelText('Título')).toHaveValue('Un título');
+        expect(screen.getByLabelText('Texto')).toHaveValue('Un texto largo');
+        expect(screen.getByLabelText('Autor')).toHaveValue('3');
+        await waitFor(() => expect(submitButton()).toBeEnabled());
+        expect(screen.getByRole('link', { name: postMock.title })).toBeInTheDocument();
+      });
+
+      it('shows no previous error after cancelling and reopening the form', async () => {
+        await failToCreate();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        await openForm();
+
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        expect(screen.getByLabelText('Título')).toHaveValue('');
+      });
+    });
   });
 });
