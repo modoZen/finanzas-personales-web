@@ -60,7 +60,7 @@ Como el header sigue visible, el usuario puede navegar con el aviso en pantalla;
 - En los tests que provocan errores se silencia `console.error` con `vi.spyOn(console, 'error').mockImplementation(() => {})`; `restoreMocks` lo restaura.
 
 **7. Documentación.**
-`docs/architecture.md`: la regla 15 pasa a describir el `ErrorBoundary` en el árbol de `App` (por fuera del `Suspense`, dentro de `RootLayout`, con reset por ruta), y la decisión abierta del error boundary se quita de «Decisiones abiertas». `docs/conventions.md`: la convención 7, «Mocks», añade el tercer caso, `vi.stubGlobal` para APIs del navegador que no se pueden espiar (en jsdom, `vi.spyOn(window.location, 'reload')` lanza «Cannot redefine property»), que `unstubGlobals` ya limpia.
+`docs/architecture.md`: la regla 15 pasa a describir el `ErrorBoundary` en el árbol de `App` (por fuera del `Suspense`, dentro de `RootLayout`, con reset por ruta), y la decisión abierta del error boundary se quita de «Decisiones abiertas». `docs/conventions.md`: la convención 7, «Mocks», añade el tercer caso, `vi.stubGlobal` para APIs del navegador que no se pueden espiar (en jsdom, `vi.spyOn(window.location, 'reload')` lanza «Cannot redefine property»), que `unstubGlobals` ya limpia, y una frase más en esa misma convención: cuando un mismo módulo sustituido necesita comportarse distinto entre tests, se usa una bandera creada con `vi.hoisted` (como en `App.test.tsx`). La regla 17 de `docs/architecture.md` añade que cada archivo fuente tiene como mucho un archivo de test, con su mismo nombre (`Button.tsx` → `Button.test.tsx`), y que los casos de un archivo no se reparten en otros archivos de test.
 
 ## Risks / Trade-offs
 

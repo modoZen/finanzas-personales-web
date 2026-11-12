@@ -100,7 +100,9 @@ app/<modulo>/
     de los archivos sueltos en la raíz de `src/` o de un módulo (`App.tsx`, `routes.ts`, el router
     del módulo…) viven en un `__tests__/` en esa misma raíz. Cada subcarpeta de `utils/` (por
     ejemplo `utils/http/`) lleva su propio `__tests__/`. Los archivos de test se llaman
-    `<Nombre>.test.ts(x)`, con el nombre de lo que prueban.
+    `<Nombre>.test.ts(x)`, con el nombre de lo que prueban. Cada archivo fuente tiene como mucho un
+    archivo de test, con su mismo nombre (`Button.tsx` → `Button.test.tsx`); los casos de un archivo
+    no se reparten en otros archivos de test.
 
 ```
 components/Button/Button.tsx

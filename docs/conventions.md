@@ -30,7 +30,8 @@ Reglas de código y estilo que no son de carpetas ni archivos (esas viven en `ar
      `vi.spyOn(window.location, 'reload')` lanza «Cannot redefine property»; se sustituye todo
      `location`), que `unstubGlobals` ya limpia entre tests; `mocks/` queda para datos de prueba
      (regla 14 de `architecture.md`). El texto de un stub es el nombre del componente en inglés
-     (`Example page`).
+     (`Example page`). Cuando un mismo módulo sustituido necesita comportarse distinto entre tests,
+     se usa una bandera creada con `vi.hoisted` (como en `App.test.tsx`).
    - **Sin red**: ningún test llama a la red ni usa MSW. El flujo contra una API real queda para los
      tests e2e del primer módulo real.
 8. **Formularios**: el formulario (`useForm` con el resolver del esquema, regla 22 de
