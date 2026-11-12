@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import userEvent, { type UserEvent } from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithRouterAndQuery } from '@/shared/test-utils/render-with-router-and-query';
@@ -19,12 +19,12 @@ const newPostButton = () => screen.getByRole('button', { name: 'Nuevo post' });
 const submitButton = () => screen.getByRole('button', { name: 'Crear post' });
 const isFormShown = (): boolean => screen.queryByLabelText('Título') !== null;
 
-const openForm = () => userEvent.click(newPostButton());
+const openForm = (user: UserEvent) => user.click(newPostButton());
 
-const fillForm = async (): Promise<void> => {
-  await userEvent.type(screen.getByLabelText('Título'), 'Un título');
-  await userEvent.type(screen.getByLabelText('Texto'), 'Un texto largo');
-  await userEvent.type(screen.getByLabelText('Autor'), '3');
+const fillForm = async (user: UserEvent): Promise<void> => {
+  await user.type(screen.getByLabelText('Título'), 'Un título');
+  await user.type(screen.getByLabelText('Texto'), 'Un texto largo');
+  await user.type(screen.getByLabelText('Autor'), '3');
 };
 
 const renderWithPosts = async () => {
@@ -83,21 +83,23 @@ describe('ExamplePage', () => {
     });
 
     it('opens the form and hides the "Nuevo post" button', async () => {
+      const user = userEvent.setup();
       await renderWithPosts();
 
-      await openForm();
+      await openForm(user);
 
       expect(isFormShown()).toBe(true);
       expect(screen.queryByRole('button', { name: 'Nuevo post' })).not.toBeInTheDocument();
     });
 
     it('closes the form and shows "Nuevo post" again when cancelling, without creating', async () => {
+      const user = userEvent.setup();
       await renderWithPosts();
       const create = vi.spyOn(postProxy, 'create');
-      await openForm();
-      await fillForm();
+      await openForm(user);
+      await fillForm(user);
 
-      await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      await user.click(screen.getByRole('button', { name: 'Cancelar' }));
 
       expect(isFormShown()).toBe(false);
       expect(newPostButton()).toBeInTheDocument();
@@ -105,11 +107,12 @@ describe('ExamplePage', () => {
     });
 
     it('does not create a post while the form is invalid', async () => {
+      const user = userEvent.setup();
       await renderWithPosts();
       const create = vi.spyOn(postProxy, 'create');
-      await openForm();
+      await openForm(user);
 
-      await userEvent.click(submitButton());
+      await user.click(submitButton());
 
       expect(await screen.findByText('El título debe tener al menos 3 caracteres.')).toBeVisible();
       expect(create).not.toHaveBeenCalled();
@@ -117,17 +120,18 @@ describe('ExamplePage', () => {
     });
 
     describe('when the creation succeeds', () => {
-      const createSuccessfully = async () => {
+      const createSuccessfully = async (user: UserEvent) => {
         await renderWithPosts();
         const create = vi.spyOn(postProxy, 'create').mockResolvedValue({ ...postMock, id: 101 });
-        await openForm();
-        await fillForm();
-        await userEvent.click(submitButton());
+        await openForm(user);
+        await fillForm(user);
+        await user.click(submitButton());
         return create;
       };
 
       it('creates the converted model, closes the form, shows "Nuevo post" and says it is not stored', async () => {
-        const create = await createSuccessfully();
+        const user = userEvent.setup();
+        const create = await createSuccessfully(user);
 
         expect(await screen.findByText(/Post creado con id 101/)).toHaveTextContent(
           'La API de ejemplo no lo guarda',
@@ -142,10 +146,11 @@ describe('ExamplePage', () => {
       });
 
       it('reopens the form empty and without the previous notice', async () => {
-        await createSuccessfully();
+        const user = userEvent.setup();
+        await createSuccessfully(user);
         await screen.findByText(/Post creado con id 101/);
 
-        await openForm();
+        await openForm(user);
 
         expect(screen.getByLabelText('Título')).toHaveValue('');
         expect(screen.getByLabelText('Texto')).toHaveValue('');
@@ -155,17 +160,18 @@ describe('ExamplePage', () => {
     });
 
     describe('when the creation fails', () => {
-      const failToCreate = async () => {
+      const failToCreate = async (user: UserEvent) => {
         await renderWithPosts();
         vi.spyOn(postProxy, 'create').mockRejectedValue(new Error('boom'));
-        await openForm();
-        await fillForm();
-        await userEvent.click(submitButton());
+        await openForm(user);
+        await fillForm(user);
+        await user.click(submitButton());
         await screen.findByRole('alert');
       };
 
       it('shows the error and keeps the form open with what was written', async () => {
-        await failToCreate();
+        const user = userEvent.setup();
+        await failToCreate(user);
 
         expect(screen.getByRole('alert')).toHaveTextContent('No se pudo crear el post.');
         expect(screen.getByLabelText('Título')).toHaveValue('Un título');
@@ -176,11 +182,12 @@ describe('ExamplePage', () => {
       });
 
       it('shows no previous error after cancelling and reopening the form', async () => {
-        await failToCreate();
+        const user = userEvent.setup();
+        await failToCreate(user);
 
-        await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+        await user.click(screen.getByRole('button', { name: 'Cancelar' }));
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-        await openForm();
+        await openForm(user);
 
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
         expect(screen.getByLabelText('Título')).toHaveValue('');

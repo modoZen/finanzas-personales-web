@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import userEvent, { type UserEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import PostForm from '../PostForm';
 
@@ -14,12 +14,12 @@ const renderForm = (props: { isPending?: boolean } = {}) => {
   return { onSubmit, onCancel };
 };
 
-const submit = () => userEvent.click(screen.getByRole('button', { name: 'Crear post' }));
+const submit = (user: UserEvent) => user.click(screen.getByRole('button', { name: 'Crear post' }));
 
-const fillValid = async (): Promise<void> => {
-  await userEvent.type(screen.getByLabelText('Título'), '  Un título  ');
-  await userEvent.type(screen.getByLabelText('Texto'), ' Un texto largo ');
-  await userEvent.type(screen.getByLabelText('Autor'), ' 3 ');
+const fillValid = async (user: UserEvent): Promise<void> => {
+  await user.type(screen.getByLabelText('Título'), '  Un título  ');
+  await user.type(screen.getByLabelText('Texto'), ' Un texto largo ');
+  await user.type(screen.getByLabelText('Autor'), ' 3 ');
 };
 
 const messageOf = (field: HTMLElement): HTMLElement | null =>
@@ -45,9 +45,10 @@ describe('PostForm', () => {
 
   describe('validation', () => {
     it('does not submit an empty form and shows each message linked to its field', async () => {
+      const user = userEvent.setup();
       const { onSubmit } = renderForm();
 
-      await submit();
+      await submit(user);
 
       for (const [label, message] of [
         ['Título', titleMessage],
@@ -62,20 +63,22 @@ describe('PostForm', () => {
     });
 
     it('focuses the first invalid field', async () => {
+      const user = userEvent.setup();
       renderForm();
-      await userEvent.type(screen.getByLabelText('Título'), 'Un título');
+      await user.type(screen.getByLabelText('Título'), 'Un título');
 
-      await submit();
+      await submit(user);
 
       await waitFor(() => expect(screen.getByLabelText('Texto')).toHaveFocus());
     });
 
     it('removes the message of a field as soon as it is corrected, without submitting again', async () => {
+      const user = userEvent.setup();
       renderForm();
-      await submit();
+      await submit(user);
       await screen.findByText(titleMessage);
 
-      await userEvent.type(screen.getByLabelText('Título'), 'abc');
+      await user.type(screen.getByLabelText('Título'), 'abc');
 
       await waitFor(() => expect(screen.queryByText(titleMessage)).not.toBeInTheDocument());
       expect(screen.getByLabelText('Título')).not.toHaveAttribute('aria-invalid', 'true');
@@ -86,10 +89,11 @@ describe('PostForm', () => {
 
   describe('submit', () => {
     it('calls onSubmit once with the converted model, with the spaces trimmed', async () => {
+      const user = userEvent.setup();
       const { onSubmit } = renderForm();
-      await fillValid();
+      await fillValid(user);
 
-      await submit();
+      await submit(user);
 
       await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
       expect(onSubmit).toHaveBeenCalledWith({
@@ -119,9 +123,10 @@ describe('PostForm', () => {
 
   describe('cancel', () => {
     it('calls onCancel and not onSubmit, even if the form is invalid', async () => {
+      const user = userEvent.setup();
       const { onSubmit, onCancel } = renderForm();
 
-      await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      await user.click(screen.getByRole('button', { name: 'Cancelar' }));
 
       expect(onCancel).toHaveBeenCalledTimes(1);
       expect(onSubmit).not.toHaveBeenCalled();
@@ -129,10 +134,11 @@ describe('PostForm', () => {
     });
 
     it('does not submit a valid form either', async () => {
+      const user = userEvent.setup();
       const { onSubmit, onCancel } = renderForm();
-      await fillValid();
+      await fillValid(user);
 
-      await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      await user.click(screen.getByRole('button', { name: 'Cancelar' }));
 
       expect(onCancel).toHaveBeenCalledTimes(1);
       expect(onSubmit).not.toHaveBeenCalled();

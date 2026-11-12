@@ -2,9 +2,9 @@
 
 ## 1. Migrar los tests a `userEvent.setup()`
 
-- [ ] 1.1 En `src/shared/components/ErrorFallback/__tests__/ErrorFallback.test.tsx` y `src/__tests__/App.test.tsx`, crear `const user = userEvent.setup();` antes de `render` en cada test que interactúa y sustituir `userEvent.click` por `user.click`; verificar que `grep -n "userEvent\." ` en esos dos archivos solo encuentra `userEvent.setup()` y que `npx vitest run src/shared/components/ErrorFallback src/__tests__/App.test.tsx` pasa sin cambiar ninguna aserción
-- [ ] 1.2 En `src/app/example/components/PostForm/__tests__/PostForm.test.tsx`, crear `user` por test y pasarlo a los helpers `submit` y `fillValid` (parámetro `user: UserEvent`, importado con `import type`); verificar que no quedan llamadas directas a `userEvent.<acción>`, que `npx vitest run src/app/example/components/PostForm` pasa y que el número de tests no cambia
-- [ ] 1.3 En `src/app/example/pages/ExamplePage/__tests__/ExamplePage.test.tsx`, lo mismo para `openForm` y `fillForm`, y para los tests que pulsan «Cancelar» y el botón de envío; verificar que no quedan llamadas directas a `userEvent.<acción>`, que `npx vitest run src/app/example/pages/ExamplePage` pasa y que el número de tests no cambia
+- [x] 1.1 En `src/shared/components/ErrorFallback/__tests__/ErrorFallback.test.tsx` y `src/__tests__/App.test.tsx`, crear `const user = userEvent.setup();` antes de `render` en cada test que interactúa y sustituir `userEvent.click` por `user.click`; verificar que `grep -n "userEvent\." ` en esos dos archivos solo encuentra `userEvent.setup()` y que `npx vitest run src/shared/components/ErrorFallback src/__tests__/App.test.tsx` pasa sin cambiar ninguna aserción
+- [x] 1.2 En `src/app/example/components/PostForm/__tests__/PostForm.test.tsx`, crear `user` por test y pasarlo a los helpers `submit` y `fillValid` (parámetro `user: UserEvent`, importado con `import type`); verificar que no quedan llamadas directas a `userEvent.<acción>`, que `npx vitest run src/app/example/components/PostForm` pasa y que el número de tests no cambia
+- [x] 1.3 En `src/app/example/pages/ExamplePage/__tests__/ExamplePage.test.tsx`, lo mismo para `openForm` y `fillForm`, y para los tests que pulsan «Cancelar» y el botón de envío; verificar que no quedan llamadas directas a `userEvent.<acción>`, que `npx vitest run src/app/example/pages/ExamplePage` pasa y que el número de tests no cambia
 
 ## 2. Convención y verificación final
 

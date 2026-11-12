@@ -20,12 +20,13 @@ describe('ErrorFallback', () => {
   });
 
   it('reloads the page once when the button is pressed', async () => {
+    const user = userEvent.setup();
     const reload = vi.fn();
     // jsdom does not allow spying on window.location.reload, so the whole location is replaced.
     vi.stubGlobal('location', { ...window.location, reload });
     render(<ErrorFallback />);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Recargar página' }));
+    await user.click(screen.getByRole('button', { name: 'Recargar página' }));
 
     expect(reload).toHaveBeenCalledTimes(1);
   });

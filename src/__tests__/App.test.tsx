@@ -84,24 +84,26 @@ describe('App', () => {
     });
 
     it('removes the fallback when a header link leads to another route', async () => {
+      const user = userEvent.setup();
       moduleState.shouldThrow = true;
       renderWithRouter(<App />, { route: '/example/detalle' });
       expect(await screen.findByRole('alert')).toBeInTheDocument();
 
       moduleState.shouldThrow = false;
-      await userEvent.click(screen.getByRole('link', { name: 'Ejemplo' }));
+      await user.click(screen.getByRole('link', { name: 'Ejemplo' }));
 
       expect(await screen.findByText('Example module')).toBeInTheDocument();
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 
     it('keeps the fallback when a header link leads to the current route', async () => {
+      const user = userEvent.setup();
       moduleState.shouldThrow = true;
       renderWithRouter(<App />, { route: '/example' });
       expect(await screen.findByRole('alert')).toBeInTheDocument();
 
       moduleState.shouldThrow = false;
-      await userEvent.click(screen.getByRole('link', { name: 'Ejemplo' }));
+      await user.click(screen.getByRole('link', { name: 'Ejemplo' }));
 
       expect(screen.getByRole('alert')).toBeInTheDocument();
       expect(screen.queryByText('Example module')).not.toBeInTheDocument();
