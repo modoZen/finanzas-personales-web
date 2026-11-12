@@ -81,9 +81,13 @@ app/<modulo>/
 
 15. Cada módulo se carga con `lazy` desde `App.tsx`. Un `Suspense` con fallback envuelve las
     `Routes` y se pasa como `children` de `RootLayout`, así el header queda fuera del límite de
-    carga. El `BrowserRouter` vive en `main.tsx`, no en `App.tsx`, para que los tests puedan
-    inyectar un `MemoryRouter`. Dentro de un módulo, las páginas se cargan con `lazy` solo si lo
-    justifican, y entonces el módulo pone su propio `Suspense`.
+    carga. Un `ErrorBoundary` (`react-error-boundary`) envuelve ese `Suspense`, también dentro de
+    `RootLayout`: cubre un fallo de render o de descarga de un módulo, y también un fallo del
+    fallback del `Suspense`, y deja el header visible. Muestra `ErrorFallback`, de
+    `shared/components/`, y se limpia al cambiar el `pathname` (`resetKeys`). El `BrowserRouter`
+    vive en `main.tsx`, no en `App.tsx`, para que los tests puedan inyectar un `MemoryRouter`.
+    Dentro de un módulo, las páginas se cargan con `lazy` solo si lo justifican, y entonces el
+    módulo pone su propio `Suspense`.
 16. Las rutas base viven en `src/routes.ts` (`appRoutes`, absolutas); las del módulo, en su
     `*.routes.ts` (`exampleRoutes`, relativas: el módulo no sabe dónde está montado). Los enlaces
     del módulo se construyen con `generatePath` a partir de esas constantes.
@@ -139,7 +143,5 @@ mappers/__tests__/transaction.mapper.test.ts
 - `store/`: Zustand, Context o nada. Hasta decidir, el estado de UI global vive en `shared/hooks`.
 - Relación entre `core/` y `store/`: hoy ninguno importa del otro.
 - Orden de imports (hoy sin herramienta que lo aplique).
-- Error boundary para fallos al descargar un módulo o al renderizar. Hay que decidirlo antes del
-  primer deploy.
 - Configuración del servidor para el `BrowserRouter`: un hosting estático debe devolver `index.html`
   para cualquier ruta. Hay que resolverlo antes del primer deploy.

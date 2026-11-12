@@ -8,7 +8,7 @@ Hoy, si un módulo lanza un error al renderizar o falla la descarga de su chunk 
 
 - Instalar `react-error-boundary` como dependencia de producción. Se elige la librería y no una clase propia: una clase rompería la convención 1 de `docs/conventions.md` (componentes como `const X: FC`) y obligaría a abrir una excepción, y la librería ya trae `resetKeys`.
 - Crear `src/shared/components/ErrorFallback/ErrorFallback.tsx`: sin props, muestra un mensaje fijo en español (sin `error.message` ni stack) y un único botón «Recargar página» que llama a `window.location.reload()`. Reutiliza `ErrorMessage`. Con su test.
-- En `App.tsx`, envolver el `Suspense` con el `ErrorBoundary`, dentro de `RootLayout`, de modo que el header y la navegación sigan visibles. El boundary se limpia al cambiar de ruta (`resetKeys` con el `pathname` de `useLocation`). Se amplía su test con tres casos: un módulo que lanza al renderizar, un `import()` que rechaza (en un archivo de test aparte) y el reset al hacer clic en un enlace del header.
+- En `App.tsx`, envolver el `Suspense` con el `ErrorBoundary`, dentro de `RootLayout`, de modo que el header y la navegación sigan visibles. El boundary se limpia al cambiar de ruta (`resetKeys` con el `pathname` de `useLocation`). Se amplía su test con tres casos: un módulo que lanza al renderizar, el reset al hacer clic en un enlace del header a otra ruta y el clic en un enlace a la ruta actual, que no resetea. El rechazo del `import()` de `lazy` llega al boundary como un error de render y lo cubre el primer caso; su verificación es manual.
 - Actualizar `docs/architecture.md`: quitar el error boundary de las decisiones abiertas y reflejarlo en la regla 15, que describe el árbol de `App`.
 - Actualizar `docs/conventions.md`: añadir a la convención 7 («Mocks») el uso de `vi.stubGlobal` para APIs del navegador que no se pueden espiar.
 - Fuera de alcance:
@@ -30,8 +30,8 @@ Hoy, si un módulo lanza un error al renderizar o falla la descarga de su chunk 
 
 ## Impact
 
-- **Archivos nuevos**: `src/shared/components/ErrorFallback/` (componente y test) y un archivo de test aparte en `src/__tests__/` para el `import()` que rechaza.
+- **Archivos nuevos**: `src/shared/components/ErrorFallback/` (componente y test).
 - **Archivos modificados**: `src/App.tsx`, `src/__tests__/App.test.tsx`, `docs/architecture.md`, `docs/conventions.md`, `package.json` y `package-lock.json`.
 - **Dependencias**: `react-error-boundary` (peer: React 18 o 19). Entra en el bundle principal, porque `App` se carga siempre; se comprueba su tamaño en el build.
 - **Estructura**: no nace ninguna carpeta global; `ErrorFallback` va en `shared/components/` porque no conoce el negocio (regla 1).
-- **Verificación**: lint, formato, build y tests con cobertura (umbral 80 %). Lo que solo se ve en un navegador (el aspecto del fallback y una recarga real tras una descarga fallida) queda sin verificar y se informa como tal.
+- **Verificación**: lint, formato, build y tests con cobertura (umbral 80 %). El fallo de descarga de un módulo se verifica a mano en el navegador (`npm run preview` y bloqueo del chunk en DevTools). Lo demás que solo se ve en un navegador (el aspecto del fallback y que la recarga recoja un despliegue nuevo) queda sin verificar y se informa como tal.
