@@ -32,6 +32,10 @@ Reglas de código y estilo que no son de carpetas ni archivos (esas viven en `ar
      (regla 14 de `architecture.md`). El texto de un stub es el nombre del componente en inglés
      (`Example page`). Cuando un mismo módulo sustituido necesita comportarse distinto entre tests,
      se usa una bandera creada con `vi.hoisted` (como en `App.test.tsx`).
+   - **Interacción**: cada test que simula al usuario crea `const user = userEvent.setup()` antes de
+     `render` y usa `user.click`, `user.type`…; no se llama a `userEvent.<acción>` directamente ni
+     se comparte la instancia entre tests. Los helpers de test reciben `user`. `npm run lint` lo
+     comprueba.
    - **Sin red**: ningún test llama a la red ni usa MSW. El flujo contra una API real queda para los
      tests e2e del primer módulo real.
 8. **Formularios**: el formulario (`useForm` con el resolver del esquema, regla 22 de

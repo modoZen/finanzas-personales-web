@@ -40,4 +40,16 @@ export default defineConfig([
       '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
+  {
+    files: ['**/*.test.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "CallExpression[callee.object.name='userEvent'][callee.property.name!='setup']",
+          message: 'Usa `const user = userEvent.setup()` y llama a `user.<acción>`.',
+        },
+      ],
+    },
+  },
 ]);
