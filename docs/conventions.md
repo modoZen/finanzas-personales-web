@@ -24,10 +24,13 @@ Reglas de código y estilo que no son de carpetas ni archivos (esas viven en `ar
      `shared/test-utils/`) y el proxy sustituido; el router de un módulo solo comprueba que enruta,
      con sus páginas sustituidas; el test de `App` solo prueba su cableado. No hay tests de
      integración de módulo (router con páginas reales) en Vitest.
-   - **Mocks**: `vi.mock` en línea para módulos (routers, páginas, el wrapper de `fetch`) y
-     `vi.spyOn` para objetos como `postProxy`, restaurando los espías entre tests; `mocks/` queda
-     para datos de prueba (regla 14 de `architecture.md`). El texto de un stub es el nombre del
-     componente en inglés (`Example page`).
+   - **Mocks**: `vi.mock` en línea para módulos (routers, páginas, el wrapper de `fetch`),
+     `vi.spyOn` para objetos como `postProxy`, restaurando los espías entre tests, y `vi.stubGlobal`
+     para las APIs del navegador que no se pueden espiar (en jsdom,
+     `vi.spyOn(window.location, 'reload')` lanza «Cannot redefine property»; se sustituye todo
+     `location`), que `unstubGlobals` ya limpia entre tests; `mocks/` queda para datos de prueba
+     (regla 14 de `architecture.md`). El texto de un stub es el nombre del componente en inglés
+     (`Example page`).
    - **Sin red**: ningún test llama a la red ni usa MSW. El flujo contra una API real queda para los
      tests e2e del primer módulo real.
 8. **Formularios**: el formulario (`useForm` con el resolver del esquema, regla 22 de
