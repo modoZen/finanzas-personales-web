@@ -8,7 +8,7 @@ La aplicación todavía no tiene identidad visual: usa la paleta por defecto de 
 
 - Añadir la dependencia `@fontsource-variable/plus-jakarta-sans` para autoalojar la tipografía (sin Google Fonts por CDN).
 - `src/index.css` pasa a ser el archivo de tokens. Orden: `@import 'tailwindcss'`, el import de la fuente y un bloque `@theme` con:
-  - los 19 colores del DS por propósito (`bg`, `surface`, `ink`, `primary`, `income`, `credit`, `error`…), como `--color-*`;
+  - los 20 colores del DS por propósito (`bg`, `surface`, `ink`, `primary`, `income`, `credit`, `error`…), como `--color-*`;
   - los 5 radios (`sm`, `md`, `lg`, `xl`, `pill`);
   - las 4 sombras (`card`, `raised`, `fab`, `modal`);
   - los 7 estilos de texto (`display`, `title`, `heading`, `body-strong`, `body`, `caption`, `small`) con su interlineado, peso e interletraje;

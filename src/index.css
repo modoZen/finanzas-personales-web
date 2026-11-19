@@ -3,4 +3,64 @@
 
 @theme {
   --font-sans: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Colors: named by purpose. Blue (primary) is only for what can be tapped or is active. */
+  --color-bg: #f2f8fd;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eef3f8;
+  --color-ink: #0f2a43;
+  --color-ink-muted: #475569;
+  --color-line: #e2edf6;
+  --color-control-border: #7b8fa3;
+  --color-primary: #0369a1;
+  --color-primary-hover: #075985;
+  --color-primary-soft: #dceffb;
+  --color-primary-tint: #bae6fd;
+  --color-on-primary: #ffffff;
+  --color-income: #0b6b3a;
+  --color-income-soft: #dff3e8;
+  --color-income-surface: #eef8f2;
+  --color-credit: #9a4a07;
+  --color-credit-soft: #fdf0e1;
+  --color-error: #b42318;
+  --color-error-soft: #fdecea;
+  --color-overlay: rgba(15, 42, 67, 0.45);
+
+  /* Text styles */
+  --text-display: 32px;
+  --text-display--line-height: 36px;
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.03em;
+  --text-title: 26px;
+  --text-title--line-height: 32px;
+  --text-title--font-weight: 800;
+  --text-title--letter-spacing: -0.02em;
+  --text-heading: 17px;
+  --text-heading--line-height: 24px;
+  --text-heading--font-weight: 800;
+  --text-body-strong: 15px;
+  --text-body-strong--line-height: 22px;
+  --text-body-strong--font-weight: 700;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-body--font-weight: 500;
+  --text-caption: 13px;
+  --text-caption--line-height: 18px;
+  --text-caption--font-weight: 500;
+  --text-small: 12px;
+  --text-small--line-height: 16px;
+  --text-small--font-weight: 600;
+
+  /* Radius: sm, md, lg and xl override Tailwind's defaults */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 6px 20px rgba(3, 105, 161, 0.08);
+  --shadow-raised: 0 1px 3px rgba(15, 42, 67, 0.08);
+  --shadow-fab: 0 8px 20px rgba(3, 105, 161, 0.35);
+  --shadow-modal: 0 24px 48px rgba(15, 42, 67, 0.25);
 }

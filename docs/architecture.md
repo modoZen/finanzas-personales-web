@@ -19,6 +19,7 @@ src/
   routes.ts   rutas base de cada módulo
   App.tsx     rutas raíz: layout, Suspense y módulos cargados con lazy
   main.tsx    punto de entrada; monta los providers: QueryClientProvider y BrowserRouter
+  index.css   estilos globales: la fuente y los tokens de diseño (`@theme`)
   setup-tests.ts   setup global de Vitest
 ```
 
@@ -139,6 +140,17 @@ mappers/__tests__/transaction.mapper.test.ts
     importar por la regla 9). Un esquema de formulario valida los valores del formulario, no el
     modelo: la conversión de esos valores al modelo se hace en un mapper. Esas carpetas nacen cuando
     un segundo módulo las necesita (regla 3).
+
+### Estilos
+
+23. Los tokens de diseño viven en el bloque `@theme` de `src/index.css`, junto a la fuente. Se
+    nombran por su propósito, no por su valor (`primary`, `income`, `error`, no `blue-600`). Sus
+    valores salen del Design System «Yupana», que no se versiona en el repo: desde que se importan,
+    `index.css` es la fuente de verdad. Los componentes usan las utilidades de esos tokens
+    (`bg-surface`, `text-ink`, `rounded-xl`); la paleta por defecto de Tailwind se conserva solo
+    hasta que los componentes existentes se migren, y el código nuevo no la usa. El espaciado es la
+    escala nativa de Tailwind. Si aparece otro CSS global (un reset, animaciones), se separa en
+    `styles/` con su propio change, que actualiza este documento.
 
 ## Decisiones abiertas
 
