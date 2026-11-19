@@ -2,8 +2,8 @@
 
 ## 1. Fuente
 
-- [ ] 1.1 Instalar `@fontsource-variable/plus-jakarta-sans` como dependencia y verificar que aparece en `dependencies` de `package.json` y que `npm ls @fontsource-variable/plus-jakarta-sans` la resuelve sin errores.
-- [ ] 1.2 En `src/index.css`, tras `@import 'tailwindcss'`, importar la fuente y abrir un bloque `@theme` (sin `static`) con `--font-sans` (nombre de familia confirmado en el CSS del paquete, con `system-ui` de respaldo). Verificar con `npm run build` sin errores, con el `@font-face` en el CSS de `dist/` y con el `.woff2` emitido en `dist/assets/`.
+- [x] 1.1 Instalar `@fontsource-variable/plus-jakarta-sans` como dependencia y verificar que aparece en `dependencies` de `package.json` y que `npm ls @fontsource-variable/plus-jakarta-sans` la resuelve sin errores.
+- [x] 1.2 En `src/index.css`, tras `@import 'tailwindcss'`, importar la fuente y abrir un bloque `@theme` (sin `static`) con `--font-sans` (nombre de familia confirmado en el CSS del paquete, con `system-ui` de respaldo). Verificar con `npm run build` sin errores, con el `@font-face` en el CSS de `dist/` y con el `.woff2` emitido en `dist/assets/`.
 
 ## 2. Tokens
 
