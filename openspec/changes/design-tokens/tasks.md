@@ -15,8 +15,8 @@
 
 ## 3. Verificación integral
 
-- [ ] 3.1 Ejecutar `npm run lint`, `npm run format:check`, `npm test` y `npm run build` y verificar que los cuatro terminan sin errores.
-- [ ] 3.2 Pendiente de confirmación del usuario: con `npm run dev`, comprobar en el navegador que el texto se muestra en Plus Jakarta Sans (DevTools, fuentes calculadas) y que `rounded-md` de `ErrorMessage` mide 14 px. La hace el usuario; Claude no la marca como hecha.
+- [x] 3.1 Ejecutar `npm run lint`, `npm run format:check`, `npm test` y `npm run build` y verificar que los cuatro terminan sin errores.
+- [x] 3.2 Confirmada por el usuario en el navegador: con `npm run dev`, comprobar en el navegador que el texto se muestra en Plus Jakarta Sans (DevTools, fuentes calculadas) y que `rounded-md` de `ErrorMessage` mide 14 px. La hace el usuario; Claude no la marca como hecha.
 
 ## Workflow follow-up
 
