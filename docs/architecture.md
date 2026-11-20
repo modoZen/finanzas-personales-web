@@ -93,7 +93,11 @@ app/<modulo>/
     `shared/components/`, y se limpia al cambiar el `pathname` (`resetKeys`). El `BrowserRouter`
     vive en `main.tsx`, no en `App.tsx`, para que los tests puedan inyectar un `MemoryRouter`.
     Dentro de un módulo, las páginas se cargan con `lazy` solo si lo justifican, y entonces el
-    módulo pone su propio `Suspense`.
+    módulo pone su propio `Suspense`. Un módulo solo de desarrollo (`app/gallery/`) se monta con
+    `lazy` dentro de una condición `import.meta.env.DEV` escrita tal cual, y su ruta y su enlace de
+    navegación repiten esa misma condición: así el bundler elimina el `import()` en producción y
+    `/gallery` cae en la página de no encontrada. La rama de producción no se prueba con Vitest
+    (corre con `DEV` activo); se comprueba contra el build.
 16. Las rutas base viven en `src/routes.ts` (`appRoutes`, absolutas); las del módulo, en su
     `*.routes.ts` (`exampleRoutes`, relativas: el módulo no sabe dónde está montado). Los enlaces
     del módulo se construyen con `generatePath` a partir de esas constantes.

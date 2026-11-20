@@ -10,7 +10,16 @@ import Spinner from '@/shared/components/Spinner/Spinner';
 
 const ExampleRouter = lazy(() => import('@/app/example/ExampleRouter'));
 
-const navItems: NavItem[] = [{ label: 'Ejemplo', to: appRoutes.example }];
+// Development only: the literal `import.meta.env.DEV` lets the bundler drop both the `import()` and
+// the link from the production build, so each condition is repeated instead of shared.
+const GalleryRouter = import.meta.env.DEV
+  ? lazy(() => import('@/app/gallery/GalleryRouter'))
+  : undefined;
+
+const navItems: NavItem[] = [
+  { label: 'Ejemplo', to: appRoutes.example },
+  ...(import.meta.env.DEV ? [{ label: 'Galería', to: appRoutes.gallery }] : []),
+];
 
 const App: FC = () => {
   const { pathname } = useLocation();
@@ -22,6 +31,7 @@ const App: FC = () => {
           <Routes>
             <Route path='/' element={<Navigate to={appRoutes.example} replace />} />
             <Route path={`${appRoutes.example}/*`} element={<ExampleRouter />} />
+            {GalleryRouter && <Route path={`${appRoutes.gallery}/*`} element={<GalleryRouter />} />}
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </Suspense>

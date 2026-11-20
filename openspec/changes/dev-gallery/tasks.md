@@ -9,10 +9,10 @@
 
 ## 2. Montaje solo en desarrollo
 
-- [ ] 2.1 Añadir `gallery: '/gallery'` a `appRoutes` en `src/routes.ts`. Verificar con `npm run build` sin errores de tipos y comprobando que el test existente de `routes.ts`, si lo hay, sigue en verde.
-- [ ] 2.2 En `src/App.tsx`, declarar `GalleryRouter` como `import.meta.env.DEV ? lazy(() => import('@/app/gallery/GalleryRouter')) : undefined`, montar `{GalleryRouter && <Route … />}` con `appRoutes.gallery` y añadir el enlace «Galería» a `navItems` con una condición `import.meta.env.DEV` literal. Verificar con `npm run dev` y abriendo `/gallery` (Claude lo comprueba con una petición al servidor de desarrollo; lo visual lo ve el usuario en 3.4).
-- [ ] 2.3 Ampliar `src/__tests__/App.test.tsx` sin cambiar los tests existentes: sustituir `@/app/gallery/GalleryRouter` por un stub («Gallery module»); comprobar que `/gallery` muestra el stub tras el indicador de carga con el header visible, y que la navegación incluye el enlace «Galería» con `aria-current="page"` en esa ruta. Verificar con `npx vitest run src/__tests__` en verde.
-- [ ] 2.4 Actualizar `docs/architecture.md` en la regla 15 (o una regla nueva sin saltos de numeración): un módulo solo de desarrollo se monta con `lazy` dentro de una condición `import.meta.env.DEV` literal, y su ruta y su enlace usan la misma condición; en producción cae en la página de no encontrada. Verificar leyendo el documento y con `npm run format:check`.
+- [x] 2.1 Añadir `gallery: '/gallery'` a `appRoutes` en `src/routes.ts`. Verificar con `npm run build` sin errores de tipos y comprobando que el test existente de `routes.ts`, si lo hay, sigue en verde.
+- [x] 2.2 En `src/App.tsx`, declarar `GalleryRouter` como `import.meta.env.DEV ? lazy(() => import('@/app/gallery/GalleryRouter')) : undefined`, montar `{GalleryRouter && <Route … />}` con `appRoutes.gallery` y añadir el enlace «Galería» a `navItems` con una condición `import.meta.env.DEV` literal. Verificar con `npm run dev` y abriendo `/gallery` (Claude lo comprueba con una petición al servidor de desarrollo; lo visual lo ve el usuario en 3.4).
+- [x] 2.3 Ampliar `src/__tests__/App.test.tsx` sin cambiar los tests existentes: sustituir `@/app/gallery/GalleryRouter` por un stub («Gallery module»); comprobar que `/gallery` muestra el stub tras el indicador de carga con el header visible, y que la navegación incluye el enlace «Galería» con `aria-current="page"` en esa ruta. Verificar con `npx vitest run src/__tests__` en verde.
+- [x] 2.4 Actualizar `docs/architecture.md` en la regla 15 (o una regla nueva sin saltos de numeración): un módulo solo de desarrollo se monta con `lazy` dentro de una condición `import.meta.env.DEV` literal, y su ruta y su enlace usan la misma condición; en producción cae en la página de no encontrada. Verificar leyendo el documento y con `npm run format:check`.
 
 ## 3. Verificación integral
 
