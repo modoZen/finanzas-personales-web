@@ -26,6 +26,11 @@ src/
 `app/example/` es un módulo temporal: prueba el patrón de rutas y de datos (consume JSONPlaceholder)
 y se borra, junto con su entrada en `routes.ts`, al crear el primer módulo real.
 
+`app/gallery/` es un módulo permanente que solo existe en desarrollo: una galería con los tokens y
+los componentes compartidos con sus variantes y estados. Es el módulo mínimo (regla 5): su router y
+una sola página, `GalleryPage`, escrita solo con JSX. No lleva `gallery.routes.ts` porque solo tiene
+la ruta `index` (regla 3). Cada change que crea componentes añade su sección a la página.
+
 ## Catálogo de un módulo
 
 Es un catálogo de nombres, no una lista de carpetas obligatorias.
