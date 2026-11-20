@@ -16,11 +16,11 @@
 
 ## 3. Verificación integral
 
-- [ ] 3.1 Ejecutar `npm run lint`, `npm run format:check`, `npm test` y `npm run build` y verificar que los cuatro terminan sin errores (y que `npm run test:coverage` sigue por encima del umbral del 80 %).
-- [ ] 3.2 Producción sin galería: tras `npm run build`, verificar que `grep -r "Galería de componentes" dist/` no devuelve nada, que `ls dist/assets | grep -i gallery` no devuelve nada y que `dist/assets` no contiene ningún chunk con `GalleryRouter`. Anotar el tamaño del CSS de `dist/`.
-- [ ] 3.3 Prueba de contraste: `npx vite build --mode development --outDir <directorio temporal del scratchpad>` (sin tocar `dist/`) y verificar que ahí el `grep` anterior sí encuentra «Galería de componentes» y que existe el chunk de la galería. Si no aparece, el modo no fija `DEV` en `true` y la prueba de 3.2 no vale: corregir la forma de construir antes de seguir. Comparar el CSS con el de 3.2 para cuantificar las utilidades que solo usa la galería.
-- [ ] 3.4 Verificar con `git status` que no quedan archivos temporales ni cambios en `dist/` rastreados.
-- [ ] 3.5 Confirmada por el usuario en el navegador: con `npm run dev`, abrir `/gallery` y comprobar que se ven los tokens, el `Spinner`, el `ErrorMessage` (dos variantes) y el `ErrorFallback`, y que el enlace «Galería» aparece en el header; con `npm run preview` tras el build de producción, que `/gallery` muestra «Página no encontrada» y no hay enlace. La hace el usuario; Claude no la marca como hecha.
+- [x] 3.1 Ejecutar `npm run lint`, `npm run format:check`, `npm test` y `npm run build` y verificar que los cuatro terminan sin errores (y que `npm run test:coverage` sigue por encima del umbral del 80 %).
+- [x] 3.2 Producción sin galería: tras `npm run build`, verificar que `grep -r "Galería de componentes" dist/` no devuelve nada, que `ls dist/assets | grep -i gallery` no devuelve nada y que `dist/assets` no contiene ningún chunk con `GalleryRouter`. Anotar el tamaño del CSS de `dist/`.
+- [x] 3.3 Prueba de contraste: `NODE_ENV=development npx vite build --mode development --outDir <directorio temporal del scratchpad> --emptyOutDir` (sin tocar `dist/`; `--mode` solo no basta: sin `NODE_ENV` el build sale idéntico al de producción) y verificar que ahí el `grep` anterior sí encuentra «Galería de componentes» y que existe el chunk de la galería. Si no aparece, el modo no fija `DEV` en `true` y la prueba de 3.2 no vale: corregir la forma de construir antes de seguir. Comparar el CSS con el de 3.2 para cuantificar las utilidades que solo usa la galería.
+- [x] 3.4 Verificar con `git status` que no quedan archivos temporales ni cambios en `dist/` rastreados.
+- [x] 3.5 Confirmada por el usuario en el navegador: con `npm run dev`, abrir `/gallery` y comprobar que se ven los tokens, el `Spinner`, el `ErrorMessage` (dos variantes) y el `ErrorFallback`, y que el enlace «Galería» aparece en el header; con `npm run preview` tras el build de producción, que `/gallery` muestra «Página no encontrada» y no hay enlace. La hace el usuario; Claude no la marca como hecha.
 
 ## Workflow follow-up
 
